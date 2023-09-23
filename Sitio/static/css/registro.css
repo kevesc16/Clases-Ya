@@ -1,0 +1,104 @@
+.mainContainer {
+    display: flex;
+    height: 100vh;
+}
+
+.leftContainer {
+    display: flex;
+    width: 60%;
+    height: 100vh;
+}
+
+.rightContainer {
+    width: 40%;
+    height: 100vh;
+    background-image: url('/static/img/linesBg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.contenedorTop {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 4rem;
+    padding-right: 2rem;
+    margin-top: 1rem;
+}
+
+.botonTop {
+    background-color: black;
+    border-color: black;
+    margin-left: 1rem;
+}
+
+.img1 {
+    position: relative;
+    top: 22%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    width: 16rem;
+}
+
+.img2 {
+    position: relative;
+    top: 60%;
+    right: 12%;
+    transform: translate(-50%, -60%);
+    width: 12rem;
+}
+
+.img3 {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 16rem;
+}
+
+.leftContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.customInput {
+    margin-bottom: 2rem;
+    width: 50%;
+}
+
+.botonCustom {
+    margin-top: 2rem;
+    background-color: #fbdf54;
+    border-color: #f4e9b2;
+}
+
+.form-control:focus {
+    border-color: #fbdf54;
+    box-shadow: 0 0 0 0.2rem #f4e9b2;
+}
+
+.tituloCustom {
+    text-align: center;
+    width: 70%;
+    margin-bottom: 3rem;
+}
+
+.hiperVinculoCustom {
+    color: black;
+    font-weight: bold;
+}
+
+.checkContainer {
+    margin-top: 1rem;
+
+}
+
+.form-check-input:checked {
+    background-color: #f4e9b2;
+    border-color: #fbdf54;
+}
+
