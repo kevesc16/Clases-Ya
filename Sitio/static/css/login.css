@@ -1,23 +1,47 @@
 body {
-    background-image: url("/static/img/loginBackground.png");
-    background-position: 50% 12%; 
-
+    background-image: url('/static/img/loginBackground.png');
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 }
 
-.customCard{
-    background: #f6f6f6;
+.customImg1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10rem;
+    height: auto;
+}
+
+.customImg2 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 20rem;
+    height: auto;
+}
+
+.customImg3 {
     position: absolute;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    right: 0;
+    transform: translateY(-50%);
+    width: 20rem;
+    height: auto;
+}
+
+
+.customCard {
+    margin: 0 auto;
+    width: 30rem;
     padding: 2rem;
-    border-radius: 2rem;
+    border-radius: 1rem;
 }
 
 .customTitle {
     font-weight: bolder;
     text-align: center;
-
 }
 
 .customSubtitle {
@@ -39,7 +63,7 @@ body {
 }
 
 .btn.botonCustomAyuda {
-    border: solid 1px black !important;
+    border: solid 1.5px black !important;
 }
 
 .politicasCustom {
@@ -51,21 +75,92 @@ body {
     border-color: #f4e9b2;
 }
 
-.botonTop {
-    background-color: black;
-    border-color: black;
-}
-
 .contenedorTop {
-    margin-top: 2rem;
-    margin-right: 3rem;
     position: absolute;
     top: 0;
     right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 4rem;
+    padding-right: 2rem;
 }
 
 .vinculoRegistro {
     color: black;
     font-weight: bold;
     margin-right: 1rem;
+}
+
+.botonTop {
+    background-color: black;
+    border-color: black;
+}
+
+@media (max-width: 768px) {
+    .customImg1 {
+        display: none;
+    }
+
+    .customImg2 {
+        display: none;
+    }
+
+    .customImg3 {
+        display: none;
+    }
+}
+
+
+@media (max-height: 600px) {
+    .customImg2 {
+        display: none;
+    }
+
+    .customCard {
+        z-index: 2;
+    }
+}
+
+@media (max-width: 375px) {
+    .customCard {
+        margin: 0 auto;
+        width: 94%;
+        padding: 1rem;
+        border-radius: 1rem;
+    }
+}
+
+@media (max-height: 375px) {
+    .customCard {
+        margin: 0 auto;
+        width: 95%;
+        height: 95%;
+        padding: 1rem;
+        border-radius: 1rem;
+    }
+
+    .customSubtitle {
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+    
+    .customInput {
+        margin-bottom: 0.5rem;
+    }
+
+    .politicasCustom {
+        margin-bottom: 0.5rem;
+    }
+
+    .vinculoRegistro {
+        color: black;
+        font-weight: bold;
+        margin-right: 1rem;
+        z-index: 2;
+    }
+    
+    .botonTop {
+        display: none;
+    }    
 }
