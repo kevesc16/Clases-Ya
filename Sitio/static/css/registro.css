@@ -5,16 +5,23 @@
 
 .leftContainer {
     display: flex;
-    width: 60%;
+    width: 45%;
     height: 100vh;
 }
 
 .rightContainer {
-    width: 40%;
+    width: 50%;
     height: 100vh;
     background-image: url('/static/img/linesBg.png');
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+.leftMostContainer {
+    width: 5%;
+    height: 100vh;
+    background-image: url('/static/img/linesBg.png');
+
 }
 
 .contenedorTop {
