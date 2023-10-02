@@ -1,16 +1,111 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block head %}
-<title>
-    Home
-</title>
+<title>Home</title>
+<link rel="stylesheet" href="{% static '/css/home.css' %}" />
 {% endblock %}
 
-{% block body2 %}
-    <h1>Jenny</h1>
+{% block body %}
+<div class="mainContainer">
+
+  <div class="leftContainer">
+    <div class="tittlecontainer">
+      <img src="{% static '/img/booksImg.png' %}" alt="" class="customBook" />
+      <h3>Que quieres estudiar hoy?</h3>
+    </div>
+    <div class="menuContainer">
+      <ul>
+        <a href="#" class="">
+          <li class="py-2 sideItem">
+            Calendario
+          </li>
+        </a>
+        <a href="#" class="">
+          <li class="py-2 sideItem">
+            Chat
+          </li>
+        </a>
+        <a href="#" class="">
+          <li class="py-2 sideItem">
+            Ingresa a tu clase
+          </li>
+        </a>
+        <a href="#" class="">
+          <li class="py-2 sideItem">
+            Buscar profesor
+          </li>
+        </a>
+        <a href="#" class="">
+          <li class="py-2 sideItem">
+            Compra creditos!
+          </li>
+        </a>
+      </ul>
+    </div>
+    <img src="{% static '/img/layingImg.png' %}" alt="" class="layingImg">
+    <div class="profileContainer">
+      <img src="{% static '/img/profileImg.png' %}" class="avatar">
+      <span class="profileName">Default Username</span>
+    </div>
+  </div>
+
+  <div class="rightContainer">
+    <div id="carouselHome" class="carousel slide customCarousel">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselHome" data-bs-slide-to="0" class="active" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselHome" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselHome" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="{% static '/img/persoImg.png' %}" class="d-block" style="margin: 0 auto !important;">
+          <div class="carousel-caption d-none d-md-block">
+            <h5 class="tituloCarousel">Personaliza tu perfil</h5>
+            <p class="subTituloCarousel">Un perfil personalizado ayudara a tus estudiantes a tener una mejor idea de tus metodos de enseñanza </p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="{% static '/img/persoImg.png' %}" class="d-block" style="margin: 0 auto !important;">
+          <div class="carousel-caption d-none d-md-block">
+            <h5 class="tituloCarousel">Second slide label</h5>
+            <p class="subTituloCarousel">Some representative placeholder content for the second slide.</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="{% static '/img/persoImg.png' %}" class="d-block" style="margin: 0 auto !important;">
+          <div class="carousel-caption d-none d-md-block">
+            <h5 class="tituloCarousel">Third slide label</h5>
+            <p class="subTituloCarousel">Some representative placeholder content for the third slide.</p>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselHome" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselHome" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <div class="card recordatorioCustom">
+      <h5 class="card-header">Recordatorios</h5>
+      <div class="card-body">
+        <h5 class="card-title">Special title treatment</h5>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <a href="#" class="btn btn-warning botonCustom">Go somewhere</a>
+      </div>
+    </div>
+
+
+  </div>
+
+</div>
+
+
+
+
 {% endblock %}
 
-{% block body1 %}
-    <h1>Carlos</h1>
+{% block script %}
 {% endblock %}
-
