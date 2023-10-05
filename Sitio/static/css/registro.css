@@ -101,7 +101,7 @@
 
 .checkContainer {
     margin-top: 1rem;
-
+    padding: 1rem;
 }
 
 .form-check-input:checked {
@@ -109,3 +109,89 @@
     border-color: #fbdf54;
 }
 
+@media (max-width: 1280px) {
+    .leftContainer {
+        display: flex;
+        width: 60%;
+        height: 100vh;
+    }
+
+    .rightContainer {
+        width: 40%;
+    }
+
+    .leftMostContainer {
+        display: none;
+
+    }
+
+    .img2 {
+        position: absolute;
+        top: 60%;
+        right: 15%;
+        transform: translate(-50%, -60%);
+        width: 12rem;
+    }
+}
+
+@media (max-width: 1080px) {
+    .rightContainer {
+        display: none;
+    }
+
+    .leftMostContainer {
+        display: none;
+    }
+
+    .leftContainer {
+        display: flex;
+        width: 100%;
+        height: 100vh;
+    }
+
+    .customInput {
+        margin-bottom: 0.6rem;
+        width: 85%;
+    }
+
+    .botonCustom {
+        margin-top: 0.6rem;
+        background-color: #fbdf54;
+        border-color: #f4e9b2;
+    }
+
+    .tituloCustom {
+        text-align: center;
+        width: 70%;
+        margin-bottom: 1rem;
+    }
+
+    .checkContainer {
+        margin-top: 0.6rem;
+        padding: 0.6rem;
+    }
+
+    .contenedorTop {
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        height: 4rem;
+        padding-right: 0.4rem;
+        margin-top: 0rem;
+    }
+}
+
+@media (max-height: 420px) {
+    .checkContainer {
+        margin-top: 0.1rem;
+        padding: 0.1rem;
+    }
+    .tituloCustom {
+        text-align: center;
+        width: 90%;
+        margin-bottom: 0.4rem;
+    }
+}
