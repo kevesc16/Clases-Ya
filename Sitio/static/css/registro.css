@@ -113,13 +113,13 @@
 
 .checkContainer {
     margin-top: 1rem;
+    padding: 1rem;
 }
 
 .form-check-input:checked {
     background-color: #FAF252;
     border-color: #FADE52;
 }
-
 .form-check-input:focus {
 border-color: #FAF252;
 box-shadow: 0 0 0 0.2rem #FADE52;

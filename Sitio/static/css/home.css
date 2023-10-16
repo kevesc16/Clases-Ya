@@ -9,6 +9,8 @@
     flex-direction: column;
     align-items: center;
     overflow: hidden;
+    height: 100vh;
+
 }
 
 .rightContainer {
@@ -16,6 +18,8 @@
     background-image: url('/static/img/linesBg.jpg');
     background-repeat: no-repeat;
     background-size: cover;
+    height: 100vh;
+
 }
 
 .customLogo {
@@ -26,18 +30,22 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     border-bottom: 1px solid #d6d6d6;
+    height: 20%;
 }
 
 
 .menuContainer {
     width: 95%;
+    height: 50%;
 }
 
 .sideItem {
     transition: background-color 0.3s ease;
     border-bottom: 1px solid #d6d6d6;
+    font-size: 1.5rem;
+    margin-top: 1rem;
     font-size: 1.2rem;
     margin-top: 1.5rem;
     border-radius: 0.5rem;
@@ -65,6 +73,7 @@ ul {
     margin-top: auto;
     margin-bottom: 1rem;
     width: 100%;
+    height: 10%;
 }
 
 .avatar {
@@ -77,7 +86,7 @@ ul {
 }
 
 .layingImg {
-    width: 40%;
+    height: 20%;
     margin-right: 14%;
     margin-top: auto;
 }
@@ -107,6 +116,13 @@ ul {
     width: 90%;
     margin-left: auto;
     margin-right: auto;
+    height: 60%;
+}
+
+.carousel-caption {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .botonCustom {
