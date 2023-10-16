@@ -47,10 +47,14 @@ body {
 
 .btn.botonCustomAyuda {
     border: solid 1.5px #201F22 !important;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 16px;
     font-weight: normal;
-    color: #201F22;
+}
+
+.btn.botonCustomAyuda:hover {
+    border: solid 1.5px #201F22 !important;
+    color: whitesmoke !important;
+    background-color: #201F22 !important;
+    font-weight: normal;
 }
 
 .politicasCustom {
@@ -59,11 +63,8 @@ body {
 
 .botonCustomLogin {
     background-color: #fbdf54;
-    border-color: #FADE52;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 16px;
+    border-color: #fbdf54;
     font-weight: normal;
-    color: #201F22;
 }
 
 .botonCustomLogin:hover {

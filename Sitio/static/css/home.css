@@ -128,10 +128,7 @@ ul {
 .botonCustom {
     background-color: #fbdf54;
     border-color: #FADE52;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 16px;
     font-weight: normal;
-    color: #201F22;
 }
 
 .botonCustom:hover {
