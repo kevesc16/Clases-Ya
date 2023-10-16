@@ -13,12 +13,12 @@
 
 .rightContainer {
     width: 75%;
-    background-image: url('/static/img/linesBg.png');
+    background-image: url('/static/img/linesBg.jpg');
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-.customBook {
+.customLogo {
     width: 30%;
 }
 
@@ -38,9 +38,10 @@
 .sideItem {
     transition: background-color 0.3s ease;
     border-bottom: 1px solid #d6d6d6;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     margin-top: 1.5rem;
     border-radius: 0.5rem;
+    padding: 0.5rem;    
 }
 
 .sideItem:hover {
@@ -67,6 +68,7 @@ ul {
 }
 
 .avatar {
+    margin: 1rem;
     width: 5rem;
 }
 
@@ -75,7 +77,7 @@ ul {
 }
 
 .layingImg {
-    width: 60%;
+    width: 40%;
     margin-right: 14%;
     margin-top: auto;
 }
@@ -83,13 +85,15 @@ ul {
 .tituloCarousel {
     font-size: 2.5rem !important;
     font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    color: whitesmoke;
+    text-shadow: 2px 2px 4px rgba(32, 31, 34, 0.5);
 }
 
 .subTituloCarousel {
     font-size: 1.5rem !important;
     font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    color: whitesmoke;
+    text-shadow: 2px 2px 4px rgba(32, 31, 34, 0.5);
 }
 
 .recordatorioCustom {
@@ -107,5 +111,20 @@ ul {
 
 .botonCustom {
     background-color: #fbdf54;
-    border-color: #f4e9b2;
+    border-color: #FADE52;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+    color: #201F22;
+}
+
+.botonCustom:hover {
+    background-color: #FACA52;
+    border-color: #FACA52;
+    color: #201F22;
+}
+
+.carouselImg{
+    width: 30%;
+    margin: 0 auto !important;
 }

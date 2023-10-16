@@ -1,5 +1,49 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
-* {
-    font-family: 'Comfortaa';
+.heading-1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 67px;
+    font-weight: bold;
+    color: #201F22;
+}
+
+.heading-2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 51px;
+    font-weight: normal;
+    color: #201F22;
+}
+
+.heading-3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 38px;
+    font-weight: bold;
+    color: #201F22;
+}
+
+.heading-4 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 28px;
+    font-weight: bold;
+    color: #201F22;
+}
+
+.heading-5 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 21px;
+    font-weight: bold;
+    color: #201F22;
+}
+
+.heading-6 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #201F22;
+}
+
+.parrafo {
+    font-family: 'Comfortaa', sans-serif;
+    color: #585759 !important;
 }

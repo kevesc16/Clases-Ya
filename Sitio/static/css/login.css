@@ -1,5 +1,7 @@
 body {
-    background-image: url('/static/img/loginBackground.png');
+    background-image: url('/static/img/loginBackground.jpg');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -8,11 +10,9 @@ body {
 
 .customImg1 {
     position: absolute;
-    top: 0;
-    left: 0;
-    margin-left: 12rem;
-    margin-top: 4rem;
-    width: 12rem;
+    top: 10%;
+    left: 10%;
+    width: 30rem;
     height: auto;
 }
 
@@ -41,31 +41,16 @@ body {
     border-radius: 1rem;
 }
 
-.customTitle {
-    font-weight: bolder;
-    text-align: center;
-}
-
-.customSubtitle {
-    text-align: center;
-    margin-bottom: 1rem;
-}
-
 .customInput {
     margin-bottom: 2rem;
 }
 
-.customLabel {
-    font-weight: bold;
-}
-
-.hiperVinculoCustom {
-    color: black;
-    font-weight: bold;
-}
-
 .btn.botonCustomAyuda {
-    border: solid 1.5px black !important;
+    border: solid 1.5px #201F22 !important;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+    color: #201F22;
 }
 
 .politicasCustom {
@@ -74,7 +59,17 @@ body {
 
 .botonCustomLogin {
     background-color: #fbdf54;
-    border-color: #f4e9b2;
+    border-color: #FADE52;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+    color: #201F22;
+}
+
+.botonCustomLogin:hover {
+    background-color: #FACA52;
+    border-color: #FACA52;
+    color: #201F22;
 }
 
 .contenedorTop {
@@ -89,14 +84,17 @@ body {
     margin-top: 1rem;
 }
 
-.vinculoCustom {
-    color: black;
-    font-weight: bold;
+.botonTop {
+    background-color: #201F22;
+    border-color: #201F22;
+    color: whitesmoke;
+    margin-left: 1rem;
 }
 
-.botonTop {
-    background-color: black;
-    border-color: black;
+.botonTop:hover {
+    background-color: #908f91;
+    border-color: #908f91;
+    color: whitesmoke;
     margin-left: 1rem;
 }
 
@@ -109,8 +107,8 @@ body {
 }
 
 .form-control:focus {
-    border-color: #fbdf54;
-    box-shadow: 0 0 0 0.2rem #f4e9b2;
+    border-color: #FAF252;
+    box-shadow: 0 0 0 0.2rem #FADE52;
 }
 
 @media (max-width: 768px) {
@@ -169,7 +167,7 @@ body {
     }
 
     .vinculoRegistro {
-        color: black;
+        color: #201F22;
         font-weight: bold;
         margin-right: 1rem;
         z-index: 2;

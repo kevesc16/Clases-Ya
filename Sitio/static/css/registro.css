@@ -12,7 +12,7 @@
 .rightContainer {
     width: 50%;
     height: 100vh;
-    background-image: url('/static/img/linesBg.png');
+    background-image: url('/static/img/linesBg.jpg');
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -20,7 +20,7 @@
 .leftMostContainer {
     width: 5%;
     height: 100vh;
-    background-image: url('/static/img/linesBg.png');
+    background-color: #d6d6d6;
 
 }
 
@@ -37,8 +37,15 @@
 }
 
 .botonTop {
-    background-color: black;
-    border-color: black;
+    background-color: #201F22;
+    border-color: #201F22;
+    color: whitesmoke;
+}
+
+.botonTop:hover {
+    background-color: #908f91;
+    border-color: #908f91;
+    color: whitesmoke;
     margin-left: 1rem;
 }
 
@@ -80,12 +87,22 @@
 .botonCustom {
     margin-top: 2rem;
     background-color: #fbdf54;
-    border-color: #f4e9b2;
+    border-color: #FADE52;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+    color: #201F22;
+}
+
+.botonCustom:hover {
+    background-color: #FACA52;
+    border-color: #FACA52;
+    color: #201F22;
 }
 
 .form-control:focus {
-    border-color: #fbdf54;
-    box-shadow: 0 0 0 0.2rem #f4e9b2;
+    border-color: #FAF252;
+    box-shadow: 0 0 0 0.2rem #FADE52;
 }
 
 .tituloCustom {
@@ -94,18 +111,16 @@
     margin-bottom: 3rem;
 }
 
-.hiperVinculoCustom {
-    color: black;
-    font-weight: bold;
-}
-
 .checkContainer {
     margin-top: 1rem;
-
 }
 
 .form-check-input:checked {
-    background-color: #f4e9b2;
-    border-color: #fbdf54;
+    background-color: #FAF252;
+    border-color: #FADE52;
 }
 
+.form-check-input:focus {
+border-color: #FAF252;
+box-shadow: 0 0 0 0.2rem #FADE52;
+}
