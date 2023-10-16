@@ -1,0 +1,128 @@
+.mainContainer {
+    display: flex;
+    height: 100vh;
+}
+
+.leftContainer {
+    display: flex;
+    width: 45%;
+    height: 100vh;
+}
+
+.rightContainer {
+    width: 50%;
+    height: 100vh;
+    background-image: url('/static/img/linesBg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    transition: all 0.5s ease-in-out;
+}
+
+.leftMostContainer {
+    width: 5%;
+    height: 100vh;
+    background-color: #d6d6d6;
+
+}
+
+.contenedorTop {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 4rem;
+    padding-right: 2rem;
+    margin-top: 1rem;
+}
+
+.botonTop {
+    background-color: #201F22;
+    border-color: #201F22;
+    color: whitesmoke;
+}
+
+.botonTop:hover {
+    background-color: #908f91;
+    border-color: #908f91;
+    color: whitesmoke;
+    margin-left: 1rem;
+}
+
+.img1 {
+    position: relative;
+    top: 22%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    width: 16rem;
+}
+
+.img2 {
+    position: relative;
+    top: 60%;
+    right: 12%;
+    transform: translate(-50%, -60%);
+    width: 12rem;
+}
+
+.img3 {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 16rem;
+}
+
+.leftContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.customInput {
+    margin-bottom: 2rem;
+    width: 50%;
+}
+
+.botonCustom {
+    margin-top: 2rem;
+    background-color: #fbdf54;
+    border-color: #FADE52;
+    font-weight: normal;
+}
+
+.botonCustom:hover {
+    background-color: #FACA52;
+    border-color: #FACA52;
+    color: #201F22;
+}
+
+.form-control:focus {
+    border-color: #FAF252;
+    box-shadow: 0 0 0 0.2rem #FADE52;
+}
+
+.tituloCustom {
+    text-align: center;
+    width: 70%;
+    margin-bottom: 3rem;
+}
+
+.checkContainer {
+    padding: 0.5rem;
+}
+
+.form-check-input:checked {
+    background-color: #FAF252;
+    border-color: #FADE52;
+}
+
+.form-check-input:focus {
+    border-color: #FAF252;
+    box-shadow: 0 0 0 0.2rem #FADE52;
+}
+
+.slide-out {
+    transform: translateX(100%);
+}

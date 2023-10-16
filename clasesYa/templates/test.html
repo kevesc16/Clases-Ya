@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <style>
+    .slide-enter-active,
+    .slide-leave-active {
+      transition: all 0.5s ease;
+      /* Add a delay to the enter animation */
+    }
+    
+    .slide-enter,
+    .slide-leave-to {
+      transform: translateX(100%);
+    }
+    
+    /* Reduce the duration of the leave animation */
+    .slide-leave-active {
+      transition-duration: 0.5s;
+
+    }
+  </style>
+</head>
+
+<body>
+
+  {% verbatim %}
+  <div id="menuContainer">
+  <button v-for="link in links" v-bind:key="link" v-bind:class="{ active: link === selectedItem }"
+    v-on:click="selectedItem = link">{{ link }}</button>
+
+  <transition name="slide">
+    <div v-if="selectedItem === 'Inicio'">
+      <h1 style="color: red;">Inicio</h1>
+    </div>
+  </transition>
+
+  <transition name="slide">
+    <div v-if="selectedItem === 'Chat'">
+      <h1 style="color: red;">Chat</h1>
+    </div>
+  </transition>
+
+  <transition name="slide">
+    <div v-if="selectedItem === 'Calendario'">
+      <h1 style="color: red;">Calendario</h1>
+    </div>
+  </transition>
+
+  <transition name="slide">
+    <div v-if="selectedItem === 'Ingresa a tu clase'">
+      <h1 style="color: red;">Ingresa a tu clase</h1>
+    </div>
+  </transition>
+
+  <transition name="slide">
+    <div v-if="selectedItem === 'Buscar profesor'">
+      <h1 style="color: red;">Buscar profesor</h1>
+    </div>
+  </transition>
+
+  <transition name="slide">
+    <div v-if="selectedItem === 'Compra creditos!'">
+      <h1 style="color: red;">Compra creditos!</h1>
+    </div>
+  </transition>
+</div>
+  {% endverbatim %}
+
+
+  <script>
+    var app = new Vue({
+      el: '#menuContainer',
+      data: {
+        links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Buscar profesor', 'Compra creditos!'],
+        selectedItem: 'Inicio'
+      }
+    })
+  </script>
+</body>
+
+</html>

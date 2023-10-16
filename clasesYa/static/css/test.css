@@ -1,0 +1,13 @@
+.slide-right {
+    position: relative;
+    left: 0;
+    transition: left 0.5s ease;
+  }
+  
+  .slide-right-enter-active {
+    left: 100%;
+  }
+  
+  .slide-right-leave-active {
+    left: -100%;
+  }
