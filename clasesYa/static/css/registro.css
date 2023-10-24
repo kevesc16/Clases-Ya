@@ -15,14 +15,12 @@
     background-image: url('/static/img/linesBg.jpg');
     background-repeat: no-repeat;
     background-size: cover;
-    transition: all 0.5s ease-in-out;
 }
 
 .leftMostContainer {
     width: 5%;
     height: 100vh;
     background-color: #d6d6d6;
-
 }
 
 .contenedorTop {
@@ -89,13 +87,13 @@
     margin-top: 2rem;
     background-color: #fbdf54;
     border-color: #FADE52;
-    font-weight: normal;
+    color: #585759;
 }
 
 .botonCustom:hover {
     background-color: #FACA52;
     border-color: #FACA52;
-    color: #201F22;
+    color: #585759;
 }
 
 .form-control:focus {

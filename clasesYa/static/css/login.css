@@ -47,14 +47,12 @@ body {
 
 .btn.botonCustomAyuda {
     border: solid 1.5px #201F22 !important;
-    font-weight: normal;
 }
 
 .btn.botonCustomAyuda:hover {
     border: solid 1.5px #201F22 !important;
     color: whitesmoke !important;
     background-color: #201F22 !important;
-    font-weight: normal;
 }
 
 .politicasCustom {
@@ -65,12 +63,13 @@ body {
     background-color: #fbdf54;
     border-color: #fbdf54;
     font-weight: normal;
+    color: #585759;
 }
 
 .botonCustomLogin:hover {
     background-color: #FACA52;
     border-color: #FACA52;
-    color: #201F22;
+    color: #585759;
 }
 
 .contenedorTop {

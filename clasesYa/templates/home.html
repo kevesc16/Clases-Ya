@@ -2,42 +2,44 @@
 {% load static %}
 
 {% block head %}
-  <title>Home</title>
-  <link rel="stylesheet" href="{% static '/css/home.css' %}" />
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+<title>Home</title>
+<link rel="stylesheet" href="{% static '/css/home.css' %}" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 {% endblock %}
 
 {% block body %}
-  <div class="mainContainer" id="mainContainer">
-    <div class="leftContainer">
-      <div class="tittlecontainer">
-        <img src="{% static '/img/cat.png' %}" alt="" class="customLogo" />
-        <h3 class="heading-4 text-center">Que quieres estudiar hoy?</h3>
-      </div>
-      <div class="menuContainer">
-        <ul>
-          {% verbatim %}
-          <a href="#" v-for="link in links" v-on:click="selectedItem = link">
-            <li class="py-2 sideItem parrafo" v-bind:class="{ 'selected': selectedItem === link }">{{ link }}</li>
-          </a>
-          {% endverbatim %}
-        </ul>
-      </div>
-      <img src="{% static '/img/laying.png' %}" alt="" class="layingImg" />
-      <div class="profileContainer">
-        <img src="{% static '/img/girl3.png' %}" class="avatar" />
-        <span class="profileName parrafo">Camila Leyton</span>
-      </div>
+<div class="mainContainer" id="mainContainer">
+  <div class="leftContainer">
+    <div class="tittlecontainer">
+      <img src="{% static '/img/cat.png' %}" alt="" class="customLogo" />
+      <h3 class="heading-4 text-center">Que quieres estudiar hoy?</h3>
     </div>
+    <div class="menuContainer">
+      <ul>
+        {% verbatim %}
+        <a href="#" v-for="link in links" v-on:click="selectedItem = link">
+          <li class="py-2 sideItem parrafo" v-bind:class="{ 'selected': selectedItem === link }">{{ link }}</li>
+        </a>
+        {% endverbatim %}
+      </ul>
+    </div>
+    <img src="{% static '/img/laying.png' %}" alt="" class="layingImg" />
+    <div class="profileContainer">
+      <img src="{% static '/img/girl3.png' %}" class="avatar" />
+      <span class="profileName parrafo">Camila Leyton</span>
+    </div>
+  </div>
 
-    <div class="rightContainer">
+  <div class="rightContainer">
 
-      
     <transition name="slide">
       <div v-if="selectedItem === 'Inicio'">
         <div id="carouselHome" class="carousel slide customCarousel">
           <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselHome" data-bs-slide-to="0" class="active" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselHome" data-bs-slide-to="0" class="active"
+              aria-label="Slide 1"></button>
             <button type="button" data-bs-target="#carouselHome" data-bs-slide-to="1" aria-label="Slide 2"></button>
             <button type="button" data-bs-target="#carouselHome" data-bs-slide-to="2" aria-label="Slide 3"></button>
           </div>
@@ -46,7 +48,8 @@
               <img src="{% static '/img/custom.png' %}" class="d-block carouselImg" />
               <div class="carousel-caption d-none d-md-block">
                 <h5 class="tituloCarousel">Personaliza tu perfil</h5>
-                <p class="subTituloCarousel">Un perfil personalizado ayudara a tus estudiantes a tener una mejor idea de tus metodos de enseñanza</p>
+                <p class="subTituloCarousel">Un perfil personalizado ayudara a tus estudiantes a tener una mejor idea de
+                  tus metodos de enseñanza</p>
               </div>
             </div>
             <div class="carousel-item">
@@ -64,8 +67,10 @@
               </div>
             </div>
           </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#carouselHome" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span></button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselHome" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span></button>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselHome" data-bs-slide="prev"><span
+              class="carousel-control-prev-icon" aria-hidden="true"></span></button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselHome" data-bs-slide="next"><span
+              class="carousel-control-next-icon" aria-hidden="true"></span></button>
         </div>
 
         <div class="card recordatorioCustom">
@@ -85,7 +90,9 @@
           <h5 class="card-header heading-5">Calendario</h5>
           <div class="card-body">
             <h5 class="card-title heading-5" style="font-weight: normal;">Special title treatment</h5>
-            <p class="card-text parrafo">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa est recusandae molestiae aut, maiores repellat ut tempora dolorum temporibus nihil sit itaque iusto dolore porro doloremque, beatae cumque, voluptates autem?</p>
+            <p class="card-text parrafo">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa est recusandae
+              molestiae aut, maiores repellat ut tempora dolorum temporibus nihil sit itaque iusto dolore porro
+              doloremque, beatae cumque, voluptates autem?</p>
           </div>
         </div>
       </div>
@@ -97,7 +104,9 @@
           <h5 class="card-header heading-5">Chat</h5>
           <div class="card-body">
             <h5 class="card-title heading-5" style="font-weight: normal;">Special title treatment</h5>
-            <p class="card-text parrafo">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa est recusandae molestiae aut, maiores repellat ut tempora dolorum temporibus nihil sit itaque iusto dolore porro doloremque, beatae cumque, voluptates autem?</p>
+            <p class="card-text parrafo">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa est recusandae
+              molestiae aut, maiores repellat ut tempora dolorum temporibus nihil sit itaque iusto dolore porro
+              doloremque, beatae cumque, voluptates autem?</p>
           </div>
         </div>
       </div>
@@ -109,7 +118,9 @@
           <h5 class="card-header heading-5">Clases</h5>
           <div class="card-body">
             <h5 class="card-title heading-5" style="font-weight: normal;">Special title treatment</h5>
-            <p class="card-text parrafo">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa est recusandae molestiae aut, maiores repellat ut tempora dolorum temporibus nihil sit itaque iusto dolore porro doloremque, beatae cumque, voluptates autem?</p>
+            <p class="card-text parrafo">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa est recusandae
+              molestiae aut, maiores repellat ut tempora dolorum temporibus nihil sit itaque iusto dolore porro
+              doloremque, beatae cumque, voluptates autem?</p>
           </div>
         </div>
       </div>
@@ -121,7 +132,9 @@
           <h5 class="card-header heading-5">Profesores</h5>
           <div class="card-body">
             <h5 class="card-title heading-5" style="font-weight: normal;">Special title treatment</h5>
-            <p class="card-text parrafo">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa est recusandae molestiae aut, maiores repellat ut tempora dolorum temporibus nihil sit itaque iusto dolore porro doloremque, beatae cumque, voluptates autem?</p>
+            <p class="card-text parrafo">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa est recusandae
+              molestiae aut, maiores repellat ut tempora dolorum temporibus nihil sit itaque iusto dolore porro
+              doloremque, beatae cumque, voluptates autem?</p>
           </div>
         </div>
       </div>
@@ -129,26 +142,95 @@
 
     <transition name="slide">
       <div v-if="selectedItem === 'Compra creditos!'">
-        <div class="card ">
-          <h5 class="card-header heading-5">Creditos</h5>
-          <div class="card-body">
-            <h5 class="card-title heading-5" style="font-weight: normal;">Special title treatment</h5>
-            <p class="card-text parrafo">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa est recusandae molestiae aut, maiores repellat ut tempora dolorum temporibus nihil sit itaque iusto dolore porro doloremque, beatae cumque, voluptates autem?</p>
+        <div class="card profileCard">
+          <div class="card-body  m-0 p-0">
+            <img src="{% static '/img/bannerPink.png' %}" alt="" class="banner-img">
+            <img src="{% static '/img/girlAvatar.png' %}" alt="" class="avatar-img">
+
+            <div class="row mx-4 customRow">
+
+              <div class="col-6 ">
+                <div class="customInput mb-4">
+                  <label for="inputNombre" class="form-label parrafo">Nombre</label>
+
+                  <input type="text" class="form-control parrafo" id="inputNombre" placeholder="Camila" />
+                </div>
+              </div>
+
+              <div class="col-6 ">
+                <div class="customInput mb-4">
+                  <label for="inputApellido" class="form-label parrafo">Apellido</label>
+
+                  <input type="text" class="form-control parrafo" id="inputApellido" placeholder="Leyton" />
+                </div>
+              </div>
+
+              <div class="col-6 ">
+                <div class="customInput mb-4">
+                  <label for="inputEmail" class="form-label parrafo">Correo electronico</label>
+
+                  <input type="email" class="form-control parrafo" id="inputEmail"
+                    placeholder="camilaleyton@duocuc.cl" />
+                </div>
+              </div>
+
+              <div class="col-6 ">
+                <div class="customInput mb-4">
+                  <label for="inputUsername" class="form-label parrafo">Nombre de usuario</label>
+
+                  <input type="text" class="form-control parrafo" id="inputUsername" placeholder="CamilaTeacher" />
+                </div>
+              </div>
+
+              <div class="col-6 customCol">
+                <div class="customInput mb-4">
+                  <label for="inputAvatar" class="form-label parrafo">Imagen de perfil</label>
+
+                  <input type="file" class="form-control parrafo" id="inputAvatar" />
+                </div>
+              </div>
+
+
+              <div class="col-6 customCol">
+                <div class="customInput mb-4">
+                  <label for="inputTelefono" class="form-label parrafo">Teléfono</label>
+
+                  <input type="tel" class="form-control parrafo" id="inputTelefono" placeholder="+569 6212 8546" />
+                </div>
+              </div>
+
+              <div class="col-6 mt-4">
+                <div class="customInput">
+                  <label for="inputPass" class="form-label parrafo">Ingresa tu contraseña para confirmar los cambios</label>
+
+                  <input type="password" class="form-control parrafo" id="inputPass"
+                    placeholder="Ingresa tu contraseña" />
+                </div>
+              </div>
+
+              <div class="col-6 d-flex justify-content-center">
+                <div class="mt-auto">
+                  <button type="button" class="btn botonCustom heading-6">Confirmar cambios</button>
+                </div>
+              </div>
+
+            </div>
           </div>
         </div>
       </div>
     </transition>
-    
-    </div>
-  </div>
 
-  <script>
-    var app = new Vue({
-      el: '#mainContainer',
-      data: {
-        links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Buscar profesor', 'Compra creditos!'],
-        selectedItem: 'Inicio'
-      }
-    })
-  </script>
+  </div>
+</div>
+
+
+<script>
+  var app = new Vue({
+    el: '#mainContainer',
+    data: {
+      links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Buscar profesor', 'Compra creditos!'],
+      selectedItem: 'Inicio'
+    }
+  })
+</script>
 {% endblock %}

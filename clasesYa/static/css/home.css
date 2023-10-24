@@ -152,3 +152,61 @@ ul {
 .slide-leave-to {
     transform: translateX(100%);
 }
+
+/* Estilos perfil */
+.profileCard {
+    position: relative;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 10%;
+    margin-bottom: 10%;
+    border-radius: 1.5rem;
+}
+
+.avatar-img {
+    position: absolute;
+    top: 3%;
+    left: 15%;
+    z-index: 2;
+    width: 7rem;
+}
+
+.banner-img {
+    position: block;
+    top: 10;
+    width: 60%;
+    height: 5rem;
+    margin-left: 20%;
+    margin-top: 2rem;
+    border-radius: 1.5rem;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.customRow {
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+}
+
+.botonCustom {
+    background-color: #fbdf54;
+    border-color: #fbdf54;
+    font-weight: normal;
+    color: #585759;
+}
+
+.botonCustom:hover {
+    background-color: #FACA52;
+    border-color: #FACA52;
+    color: #585759;
+}
+
+.form-control:focus {
+    border-color: #FAF252;
+    box-shadow: 0 0 0 0.2rem #FADE52;
+}
+
+.customCol{
+    border-bottom: 1px solid #d6d6d6;
+}
+/* Estilos perfil */
