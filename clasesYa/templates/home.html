@@ -25,7 +25,9 @@
     <img src="{% static '/img/laying.png' %}" alt="" class="layingImg" />
     <div class="profileContainer">
       <img src="{% static '/img/girl3.png' %}" class="avatar" />
-      <span class="profileName parrafo">Camila Leyton</span>
+      <a href="#" v-on:click.prevent="selectedItem = 'Perfil'">
+        <span class="profileName parrafo">{{ user.nombre }} {{ user.apellido }}</span>
+      </a>
     </div>
   </div>
 
@@ -124,6 +126,7 @@
       </div>
     </transition>
 
+    {% if user.tipoUsuario == 2 %}
     <transition name="slide">
       <div v-if="selectedItem === 'Buscar profesor'">
         <div class="card ">
@@ -137,9 +140,24 @@
         </div>
       </div>
     </transition>
+    {% endif %}
 
     <transition name="slide">
       <div v-if="selectedItem === 'Compra creditos!'">
+        <div class="card ">
+          <h5 class="card-header heading-5">Creditos</h5>
+          <div class="card-body">
+            <h5 class="card-title heading-5" style="font-weight: normal;">Special title treatment</h5>
+            <p class="card-text parrafo">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa est recusandae
+              molestiae aut, maiores repellat ut tempora dolorum temporibus nihil sit itaque iusto dolore porro
+              doloremque, beatae cumque, voluptates autem?</p>
+          </div>
+        </div>
+      </div>
+    </transition>
+
+    <transition name="slide">
+      <div v-if="selectedItem === 'Perfil'">
         <div class="card profileCard">
           <div class="card-body  m-0 p-0">
             <img src="{% static '/img/bannerPink.png' %}" alt="" class="banner-img">
@@ -211,8 +229,60 @@
                   <button type="button" class="btn botonCustom heading-6">Confirmar cambios</button>
                 </div>
               </div>
-
             </div>
+          </div>
+        </div>
+      </div>
+    </transition>
+
+    <transition name="slide">
+      <div v-if="selectedItem === 'Mi anuncio'">
+        <div class="card m-5">
+          <div class="card-body">
+            {% if user.anuncio == None %}
+            <h1 class="heading-5 text-center mb-5">Empieza a crear tu anuncio para que los alumnos te encuentren!</h1>
+            <form action="" id="anuncioForm">
+            <div class="row">
+              <div class="col-6">
+                <div class="customInput mb-4">
+                  <label for="inputTitulo" class="form-label parrafo">Titulo</label>
+                  <input type="text" class="form-control parrafo" id="inputTitulo" placeholder="Ingresa un titulo" />
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="customInput mb-4">
+                  <label for="inputSubTitulo" class="form-label parrafo">Sub-titulo</label>
+                  <input type="text" class="form-control parrafo" id="inputSubTitulo" placeholder="Ingresa un sub-titulo" />
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="customInput mb-4">
+                  <label for="inputCampo" class="form-label parrafo">Campo</label>
+                  <input type="text" class="form-control parrafo" id="inputCampo" placeholder="Ingresa la materia que enseñas" />
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="customInput mb-4">
+                  <label for="inputPrecio" class="form-label parrafo">Precio</label>
+                  <input type="text" class="form-control parrafo" id="inputPrecio" placeholder="Ingresa un precio para tus clases" />
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="customInput mb-4">
+                  <label for="inputPrecio" class="form-label parrafo text-center" style="width: 100%;">Descripcion</label>
+                  <textarea class="customTextArea" name="" id="" rows="10"></textarea>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="customInput mb-4 text-center">
+                  <button type="submit" name="anuncioForm" value="anuncioForm" class="btn botonCustom heading-6">Confirmar cambios</button>
+                </div>
+              </div>
+            </div>
+            </form>
+            {% else %}
+            <p class="card-text parrafo">{{ user.anuncio }}</p>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -226,9 +296,15 @@
   var app = new Vue({
     el: '#mainContainer',
     data: {
-      links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Buscar profesor', 'Compra creditos!'],
-      selectedItem: 'Inicio'
+      {% if user.tipoUsuario == 1 %}
+      links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Buscar clases', 'Compra creditos!'],
+      {% else %}
+      links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Mi anuncio', 'Compra creditos!'],
+      {% endif %}
+      selectedItem: 'Mi anuncio'
     }
   })
+  let user = "{{ user.anuncio }}"
+  console.log(user)
 </script>
 {% endblock %}

@@ -25,7 +25,8 @@ def logoutUser(request):
 
 @login_required
 def home(request):
-    return render(request, "home.html")
+    user = request.user
+    return render(request, "home.html", {'user': user})
 
 def test(request):
     return render(request, "test.html")
