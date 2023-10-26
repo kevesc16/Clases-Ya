@@ -55,7 +55,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     creditos = models.IntegerField(blank=True, default=0)
     rating = models.IntegerField(blank=True, default=0)
     anuncio = models.ForeignKey(Anuncio, on_delete=models.CASCADE, blank=True, null=True)
-    tipoUsuario = models.ForeignKey(TipoUsuario, on_delete=models.CASCADE, blank=True, null=True)
+    tipoUsuario = models.ForeignKey(TipoUsuario, on_delete=models.CASCADE, null=True)
 
 
     is_active = models.BooleanField(default = True)

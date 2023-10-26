@@ -25,8 +25,14 @@
     <img src="{% static '/img/laying.png' %}" alt="" class="layingImg" />
     <div class="profileContainer">
       <img src="{% static '/img/girl3.png' %}" class="avatar" />
+      {% if user.nombre == None %}
       <a href="#" v-on:click.prevent="selectedItem = 'Perfil'">
         <span class="profileName parrafo">{{ user.nombre }} {{ user.apellido }}</span>
+      </a>
+      {% else %}
+      <a href="#" v-on:click.prevent="selectedItem = 'Perfil'">
+        <span class="profileName parrafo">{{ user.email }}</span>
+      {% endif %}
       </a>
     </div>
   </div>
@@ -126,16 +132,24 @@
       </div>
     </transition>
 
-    {% if user.tipoUsuario == 2 %}
+    {% if user.tipoUsuario.id == 2 %}
     <transition name="slide">
-      <div v-if="selectedItem === 'Buscar profesor'">
-        <div class="card ">
-          <h5 class="card-header heading-5">Profesores</h5>
+      <div v-if="selectedItem === 'Buscar clases'">
+        <div class="card clasesCard">
           <div class="card-body">
-            <h5 class="card-title heading-5" style="font-weight: normal;">Special title treatment</h5>
-            <p class="card-text parrafo">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa est recusandae
-              molestiae aut, maiores repellat ut tempora dolorum temporibus nihil sit itaque iusto dolore porro
-              doloremque, beatae cumque, voluptates autem?</p>
+            <div class="row">
+            {% for anuncio in anuncios %}
+            <div class="col-4">
+              <div class="card anunciosCards">
+                <div class="card-body">
+                  <h4 class="heading-4 text-center">{{ anuncio.titulo }}</h4>
+                  <h5 class="heading-5 text-center"> {{ anuncio.subTitulo }}</h5>
+                  <p class="parrafo text-center">{{ anuncio.campo.nombre }}</p>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
           </div>
         </div>
       </div>
@@ -169,7 +183,7 @@
                 <div class="customInput mb-4">
                   <label for="inputNombre" class="form-label parrafo">Nombre</label>
 
-                  <input type="text" class="form-control parrafo" id="inputNombre" placeholder="Camila" />
+                  <input type="text" class="form-control parrafo" id="inputNombre" placeholder="{{ user.nombre }}" />
                 </div>
               </div>
 
@@ -177,7 +191,7 @@
                 <div class="customInput mb-4">
                   <label for="inputApellido" class="form-label parrafo">Apellido</label>
 
-                  <input type="text" class="form-control parrafo" id="inputApellido" placeholder="Leyton" />
+                  <input type="text" class="form-control parrafo" id="inputApellido" placeholder="{{ user.apellido }}" />
                 </div>
               </div>
 
@@ -186,7 +200,7 @@
                   <label for="inputEmail" class="form-label parrafo">Correo electronico</label>
 
                   <input type="email" class="form-control parrafo" id="inputEmail"
-                    placeholder="camilaleyton@duocuc.cl" />
+                    placeholder="{{ user.email }}" />
                 </div>
               </div>
 
@@ -194,7 +208,7 @@
                 <div class="customInput mb-4">
                   <label for="inputUsername" class="form-label parrafo">Nombre de usuario</label>
 
-                  <input type="text" class="form-control parrafo" id="inputUsername" placeholder="CamilaTeacher" />
+                  <input type="text" class="form-control parrafo" id="inputUsername" placeholder="{{ user.username }}" />
                 </div>
               </div>
 
@@ -211,7 +225,7 @@
                 <div class="customInput mb-4">
                   <label for="inputTelefono" class="form-label parrafo">Teléfono</label>
 
-                  <input type="tel" class="form-control parrafo" id="inputTelefono" placeholder="+569 6212 8546" />
+                  <input type="tel" class="form-control parrafo" id="inputTelefono" placeholder="{{ user.telefono }}" />
                 </div>
               </div>
 
@@ -235,42 +249,44 @@
       </div>
     </transition>
 
+    {% if user.tipoUsuario.id == 1 %}
     <transition name="slide">
       <div v-if="selectedItem === 'Mi anuncio'">
-        <div class="card m-5">
+        <div class="card anuncioCard">
           <div class="card-body">
             {% if user.anuncio == None %}
             <h1 class="heading-5 text-center mb-5">Empieza a crear tu anuncio para que los alumnos te encuentren!</h1>
-            <form action="" id="anuncioForm">
-            <div class="row">
+            <form method="POST" action="{% url 'home' %}" id="anuncioForm">
+              {% csrf_token %}
+              <div class="row">
               <div class="col-6">
                 <div class="customInput mb-4">
                   <label for="inputTitulo" class="form-label parrafo">Titulo</label>
-                  <input type="text" class="form-control parrafo" id="inputTitulo" placeholder="Ingresa un titulo" />
+                  <input type="text" class="form-control parrafo" id="inputTitulo" placeholder="Ingresa un titulo" name="inputTitulo" />
                 </div>
               </div>
               <div class="col-6">
                 <div class="customInput mb-4">
                   <label for="inputSubTitulo" class="form-label parrafo">Sub-titulo</label>
-                  <input type="text" class="form-control parrafo" id="inputSubTitulo" placeholder="Ingresa un sub-titulo" />
+                  <input type="text" class="form-control parrafo" id="inputSubTitulo" placeholder="Ingresa un sub-titulo" name="inputSubTitulo" />
                 </div>
               </div>
               <div class="col-6">
                 <div class="customInput mb-4">
                   <label for="inputCampo" class="form-label parrafo">Campo</label>
-                  <input type="text" class="form-control parrafo" id="inputCampo" placeholder="Ingresa la materia que enseñas" />
+                  <input type="text" class="form-control parrafo" id="inputCampo" placeholder="Ingresa la materia que enseñas" name="inputCampo" />
                 </div>
               </div>
               <div class="col-6">
                 <div class="customInput mb-4">
                   <label for="inputPrecio" class="form-label parrafo">Precio</label>
-                  <input type="text" class="form-control parrafo" id="inputPrecio" placeholder="Ingresa un precio para tus clases" />
+                  <input type="text" class="form-control parrafo" id="inputPrecio" placeholder="Ingresa un precio para tus clases" name="inputPrecio" />
                 </div>
               </div>
               <div class="col-12">
                 <div class="customInput mb-4">
                   <label for="inputPrecio" class="form-label parrafo text-center" style="width: 100%;">Descripcion</label>
-                  <textarea class="customTextArea" name="" id="" rows="10"></textarea>
+                  <textarea class="customTextArea" name="inputDescripcion" id="inputDescripcion" rows="10" placeholder="Ingresa una descripcion para tu anuncio"></textarea>
                 </div>
               </div>
               <div class="col-12">
@@ -287,7 +303,7 @@
         </div>
       </div>
     </transition>
-
+    {% endif %}
   </div>
 </div>
 
@@ -296,15 +312,14 @@
   var app = new Vue({
     el: '#mainContainer',
     data: {
-      {% if user.tipoUsuario == 1 %}
+      {% if user.tipoUsuario.id == 2 %}
       links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Buscar clases', 'Compra creditos!'],
       {% else %}
       links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Mi anuncio', 'Compra creditos!'],
       {% endif %}
-      selectedItem: 'Mi anuncio'
+      selectedItem: 'Inicio'
     }
   })
-  let user = "{{ user.anuncio }}"
-  console.log(user)
+
 </script>
 {% endblock %}

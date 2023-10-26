@@ -226,3 +226,24 @@ textarea:focus {
     border-color: #FAF252;
     box-shadow: 0 0 0 0.2rem #FADE52;
 }
+
+.anuncioCard {
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    border-radius: 1.5rem;
+}
+
+.clasesCard {
+    margin-left: 4%;
+    margin-right: 4%;
+    margin-top: 4%;
+    margin-bottom: 4%;
+    border-radius: 1.5rem;
+    padding: 1rem;
+}
+
+.anunciosCards {
+    border-radius: 1.5rem;
+}
