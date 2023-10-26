@@ -80,7 +80,7 @@
 
 .customInput {
     margin-bottom: 2rem;
-    width: 50%;
+
 }
 
 .botonCustom {
@@ -97,6 +97,11 @@
 }
 
 .form-control:focus {
+    border-color: #FAF252;
+    box-shadow: 0 0 0 0.2rem #FADE52;
+}
+
+.form-select:focus {
     border-color: #FAF252;
     box-shadow: 0 0 0 0.2rem #FADE52;
 }
@@ -124,3 +129,13 @@
 .slide-out {
     transform: translateX(100%);
 }
+
+.error {
+    display: none;
+}
+
+.error.show {
+    display: block;
+    color: #FA5E52 !important;
+}
+

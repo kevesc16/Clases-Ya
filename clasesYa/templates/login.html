@@ -14,36 +14,39 @@
   <div class="card customCard">
     <h5 class="card-title heading-4 text-center">Bienvenido!</h5>
 
-    <h6 class="card-subtitle text-center parrafo ">Ingresa tus datos para iniciar sesion</h6>
+    <h6 class="card-subtitle text-center parrafo">Ingresa tus datos para iniciar sesion</h6>
 
     <div class="card-body">
-      <div class="customInput">
-        <label for="inputEmail" class="form-label parrafo">Correo electronico</label>
+      <form method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="customInput">
+          <label for="inputEmail" class="form-label parrafo">Correo electronico</label>
 
-        <input type="email" class="form-control parrafo" id="inputEmail" placeholder="Alumno@duocuc.cl" />
-      </div>
-
-      <div class="customInput">
-        <label for="inputPassword" class="form-label parrafo">Contraseña</label>
-
-        <input type="password" class="form-control parrafo" id="inputPassword" placeholder="Ingresa tu contraseña" />
-      </div>
-
-      <div class="politicasCustom">
-        <p class="parrafo">
-          Tu informacion sera salvaguardada seguramente segun nuestras
-          <a href="" class="parrafo">Politicas de privacidad</a>
-        </p>
-      </div>
-
-      <div class="row">
-        <div class="col-4 d-grid">
-          <button type="button" class="btn botonCustomAyuda heading-6">Ayuda?</button>
+          <input type="email" class="form-control parrafo" id="inputEmail" placeholder="Alumno@duocuc.cl" name="inputEmail"/>
         </div>
-        <div class="col-8 d-grid">
-          <button type="button" class="btn botonCustomLogin heading-6">Login</button>
+
+        <div class="customInput">
+          <label for="inputPassword" class="form-label parrafo">Contraseña</label>
+
+          <input type="password" class="form-control parrafo" id="inputPassword" placeholder="Ingresa tu contraseña" name="inputPassword"/>
         </div>
-      </div>
+
+        <div class="politicasCustom">
+          <p class="parrafo">
+            Tu informacion sera salvaguardada seguramente segun nuestras
+            <a href="" class="parrafo">Politicas de privacidad</a>
+          </p>
+        </div>
+
+        <div class="row">
+          <div class="col-4 d-grid">
+            <button type="button" class="btn botonCustomAyuda heading-6">Ayuda?</button>
+          </div>
+          <div class="col-8 d-grid">
+            <button type="submit" class="btn botonCustomLogin heading-6">Login</button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -52,7 +55,6 @@
     <button type="button" class="btn btn-lg botonTop">Nosotros</button>
   </div>
 
-  
   <div class="termContainer">
     <a href="" class="parrafo">Terminos de servicio</a>
   </div>
