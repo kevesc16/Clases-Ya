@@ -2,6 +2,8 @@
 {% load static %}
 {% block head %}
 <title>Home</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link rel="stylesheet" href="/path/to/fontawesome/css/all.min.css">
 <link rel="stylesheet" href="{% static '/css/home.css' %}" />
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 {% endblock %}
@@ -26,13 +28,13 @@
     <div class="profileContainer">
       <img src="{% static '/img/girl3.png' %}" class="avatar" />
       {% if user.nombre == None %}
-      <a href="#" v-on:click.prevent="selectedItem = 'Perfil'">
+      <a href="#" v-on:click.prevent="selectedItem = 'Perfil'" class="nameLink">
         <span class="profileName parrafo">{{ user.nombre }} {{ user.apellido }}</span>
       </a>
       {% else %}
-      <a href="#" v-on:click.prevent="selectedItem = 'Perfil'">
+      <a href="#" v-on:click.prevent="selectedItem = 'Perfil'" class="nameLink">
         <span class="profileName parrafo">{{ user.email }}</span>
-      {% endif %}
+        {% endif %}
       </a>
     </div>
   </div>
@@ -137,19 +139,28 @@
       <div v-if="selectedItem === 'Buscar clases'">
         <div class="card clasesCard">
           <div class="card-body">
+            <h5 class="card-title heading-4 text-center">Busca a tu profesor ideal</h5>
+            <form action="" style="width: 50%;" class="mx-auto mb-5">
+              <input type="search" class="form-control" placeholder="Buscas algo en especial?...">
+            </form>
+            <h5 class="card-title heading-4 text-center mb-5">Anuncios activos</h5>
             <div class="row">
-            {% for anuncio in anuncios %}
-            <div class="col-4">
-              <div class="card anunciosCards">
-                <div class="card-body">
-                  <h4 class="heading-4 text-center">{{ anuncio.titulo }}</h4>
-                  <h5 class="heading-5 text-center"> {{ anuncio.subTitulo }}</h5>
-                  <p class="parrafo text-center">{{ anuncio.campo.nombre }}</p>
-                </div>
+              {% for anuncio in anuncios %}
+              <div class="col-4">
+                <a href="#">
+                  <div class="card anunciosCards">
+                    <div class="card-body">
+                      <h4 class="heading-4 text-center">{{ anuncio.titulo }}</h4>
+                      <h5 class="heading-5 text-center"> {{ anuncio.subTitulo }}</h5>
+                      <p class="parrafo text-center">{{ anuncio.descripcion }}</p>
+                      <p class="parrafo text-center">$ {{ anuncio.precio }}</p>
+                      <p class="parrafo text-center">{{ anuncio.campo.nombre }}</p>
+                    </div>
+                  </div>
+                </a>
               </div>
+              {% endfor %}
             </div>
-            {% endfor %}
-          </div>
           </div>
         </div>
       </div>
@@ -191,7 +202,8 @@
                 <div class="customInput mb-4">
                   <label for="inputApellido" class="form-label parrafo">Apellido</label>
 
-                  <input type="text" class="form-control parrafo" id="inputApellido" placeholder="{{ user.apellido }}" />
+                  <input type="text" class="form-control parrafo" id="inputApellido"
+                    placeholder="{{ user.apellido }}" />
                 </div>
               </div>
 
@@ -199,8 +211,7 @@
                 <div class="customInput mb-4">
                   <label for="inputEmail" class="form-label parrafo">Correo electronico</label>
 
-                  <input type="email" class="form-control parrafo" id="inputEmail"
-                    placeholder="{{ user.email }}" />
+                  <input type="email" class="form-control parrafo" id="inputEmail" placeholder="{{ user.email }}" />
                 </div>
               </div>
 
@@ -208,7 +219,8 @@
                 <div class="customInput mb-4">
                   <label for="inputUsername" class="form-label parrafo">Nombre de usuario</label>
 
-                  <input type="text" class="form-control parrafo" id="inputUsername" placeholder="{{ user.username }}" />
+                  <input type="text" class="form-control parrafo" id="inputUsername"
+                    placeholder="{{ user.username }}" />
                 </div>
               </div>
 
@@ -231,7 +243,8 @@
 
               <div class="col-6 mt-4">
                 <div class="customInput">
-                  <label for="inputPass" class="form-label parrafo">Ingresa tu contraseña para confirmar los cambios</label>
+                  <label for="inputPass" class="form-label parrafo">Ingresa tu contraseña para confirmar los
+                    cambios</label>
 
                   <input type="password" class="form-control parrafo" id="inputPass"
                     placeholder="Ingresa tu contraseña" />
@@ -259,45 +272,99 @@
             <form method="POST" action="{% url 'home' %}" id="anuncioForm">
               {% csrf_token %}
               <div class="row">
-              <div class="col-6">
-                <div class="customInput mb-4">
-                  <label for="inputTitulo" class="form-label parrafo">Titulo</label>
-                  <input type="text" class="form-control parrafo" id="inputTitulo" placeholder="Ingresa un titulo" name="inputTitulo" />
+                <div class="col-6">
+                  <div class="customInput mb-4">
+                    <label for="inputTitulo" class="form-label parrafo">Titulo</label>
+                    <input type="text" class="form-control parrafo" id="inputTitulo" placeholder="Ingresa un titulo"
+                      name="inputTitulo" />
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="customInput mb-4">
+                    <label for="inputSubTitulo" class="form-label parrafo">Sub-titulo</label>
+                    <input type="text" class="form-control parrafo" id="inputSubTitulo"
+                      placeholder="Ingresa un sub-titulo" name="inputSubTitulo" />
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="customInput mb-4">
+                    <label for="inputCampo" class="form-label parrafo">Campo</label>
+                    <input type="text" class="form-control parrafo" id="inputCampo"
+                      placeholder="Ingresa la materia que enseñas" name="inputCampo" />
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="customInput mb-4">
+                    <label for="inputPrecio" class="form-label parrafo">Precio</label>
+                    <input type="text" class="form-control parrafo" id="inputPrecio"
+                      placeholder="Ingresa un precio para tus clases" name="inputPrecio" />
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="customInput mb-4">
+                    <label for="inputPrecio" class="form-label parrafo text-center"
+                      style="width: 100%;">Descripcion</label>
+                    <textarea class="customTextArea" name="inputDescripcion" id="inputDescripcion" rows="10"
+                      placeholder="Ingresa una descripcion para tu anuncio"></textarea>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="customInput mb-4 text-center">
+                    <button type="submit" name="anuncioForm" value="anuncioForm" class="btn botonCustom heading-6">Crear
+                      Anuncio</button>
+                  </div>
                 </div>
               </div>
-              <div class="col-6">
-                <div class="customInput mb-4">
-                  <label for="inputSubTitulo" class="form-label parrafo">Sub-titulo</label>
-                  <input type="text" class="form-control parrafo" id="inputSubTitulo" placeholder="Ingresa un sub-titulo" name="inputSubTitulo" />
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="customInput mb-4">
-                  <label for="inputCampo" class="form-label parrafo">Campo</label>
-                  <input type="text" class="form-control parrafo" id="inputCampo" placeholder="Ingresa la materia que enseñas" name="inputCampo" />
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="customInput mb-4">
-                  <label for="inputPrecio" class="form-label parrafo">Precio</label>
-                  <input type="text" class="form-control parrafo" id="inputPrecio" placeholder="Ingresa un precio para tus clases" name="inputPrecio" />
-                </div>
-              </div>
-              <div class="col-12">
-                <div class="customInput mb-4">
-                  <label for="inputPrecio" class="form-label parrafo text-center" style="width: 100%;">Descripcion</label>
-                  <textarea class="customTextArea" name="inputDescripcion" id="inputDescripcion" rows="10" placeholder="Ingresa una descripcion para tu anuncio"></textarea>
-                </div>
-              </div>
-              <div class="col-12">
-                <div class="customInput mb-4 text-center">
-                  <button type="submit" name="anuncioForm" value="anuncioForm" class="btn botonCustom heading-6">Confirmar cambios</button>
-                </div>
-              </div>
-            </div>
             </form>
             {% else %}
-            <p class="card-text parrafo">{{ user.anuncio }}</p>
+            <h1 class="heading-5 text-center mb-5">Modifica tu anuncio</h1>
+            <form method="POST">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-6">
+                  <div class="customInput mb-4">
+                    <label for="inputTitulo" class="form-label parrafo">Titulo</label>
+                    <input type="text" class="form-control parrafo" id="inputTitulo"
+                      placeholder="{{ user.anuncio.titulo }}" name="inputTitulo" />
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="customInput mb-4">
+                    <label for="inputSubTitulo" class="form-label parrafo">Sub-titulo</label>
+                    <input type="text" class="form-control parrafo" id="inputSubTitulo"
+                      placeholder="{{ user.anuncio.subTitulo }}" name="inputSubTitulo" />
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="customInput mb-4">
+                    <label for="inputCampo" class="form-label parrafo">Campo</label>
+                    <input type="text" class="form-control parrafo" id="inputCampo"
+                      placeholder="{{ user.anuncio.campo.nombre }}" name="inputCampo" />
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="customInput mb-4">
+                    <label for="inputPrecio" class="form-label parrafo">Precio</label>
+                    <input type="text" class="form-control parrafo" id="inputPrecio"
+                      placeholder="{{ user.anuncio.precio }}" name="inputPrecio" />
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="customInput mb-4">
+                    <label for="inputPrecio" class="form-label parrafo text-center"
+                      style="width: 100%;">Descripcion</label>
+                    <textarea class="customTextArea" name="inputDescripcion" id="inputDescripcion" rows="10"
+                      placeholder="{{ user.anuncio.descripcion }}"></textarea>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="customInput mb-4 text-center">
+                    <button type="submit" name="anuncioForm" value="anuncioUpdateForm"
+                      class="btn botonCustom heading-6">Confirmar cambios</button>
+                  </div>
+                </div>
+              </div>
+            </form>
             {% endif %}
           </div>
         </div>
@@ -313,11 +380,11 @@
     el: '#mainContainer',
     data: {
       {% if user.tipoUsuario.id == 2 %}
-      links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Buscar clases', 'Compra creditos!'],
-      {% else %}
-      links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Mi anuncio', 'Compra creditos!'],
-      {% endif %}
-      selectedItem: 'Inicio'
+  links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Buscar clases', 'Compra creditos!'],
+    {% else %}
+  links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Mi anuncio', 'Compra creditos!'],
+    {% endif %}
+  selectedItem: 'Inicio'
     }
   })
 

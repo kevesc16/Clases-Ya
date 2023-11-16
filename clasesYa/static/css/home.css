@@ -81,6 +81,7 @@ ul {
 
 .profileName {
     font-size: 1.2rem;
+    transition: color 0.2s ease;
 }
 
 .layingImg {
@@ -246,4 +247,16 @@ textarea:focus {
 
 .anunciosCards {
     border-radius: 1.5rem;
+    transition: all 0.1s ease-in-out;
 }
+
+.anunciosCards:hover {
+    box-shadow: 0 0 5px rgba(33,33,33,.2); 
+    transform: scale(1.001);
+    transition: all 0.1s ease-in-out;
+}
+
+.profileName:hover {
+    color: #FACA52 !important;
+}
+
