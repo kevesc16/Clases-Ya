@@ -34,6 +34,7 @@ def home(request):
             descripcion = request.POST.get('inputDescripcion')
             precio = request.POST.get('inputPrecio')
             campo = request.POST.get('inputCampo')
+
             campoReview = Campo.objects.filter(nombre=campo)
             if len(campoReview) == 0:
                 nuevoCampo = Campo(nombre=campo)
@@ -49,6 +50,30 @@ def home(request):
             user.save()
             
             return redirect('home')
+        elif 'updateAnuncio' in request.POST:
+            # Logica para la actualizacion de un anuncio existente
+            user = request.user
+            anuncio_id = request.POST.get('updateAnuncio')
+            anuncio = Anuncio.objects.get(id=anuncio_id)
+            # Actualiza los campos del anuncio con los nuevos valores del formulario
+            anuncio.titulo = request.POST.get('inputTitulo')
+            anuncio.subTitulo = request.POST.get('inputSubTitulo')
+            anuncio.descripcion = request.POST.get('inputDescripcion')
+            anuncio.precio = request.POST.get('inputPrecio')
+            campo = request.POST.get('inputCampo')
+            campoReview = Campo.objects.filter(nombre=campo)
+
+            if len(campoReview) == 0:
+                nuevoCampo = Campo(nombre=campo)
+                nuevoCampo.save()
+                anuncio.campo = nuevoCampo
+            else:
+                anuncio.campo = campoReview[0]
+
+            anuncio.save()
+
+            return redirect('home')
+
         else:
             return redirect('home')
     else:
