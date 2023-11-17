@@ -49,6 +49,8 @@ def home(request):
             user.save()
             
             return redirect('home')
+        elif 'updateAnuncio':
+            
         else:
             return redirect('home')
     else:
