@@ -6,6 +6,8 @@
 <link rel="stylesheet" href="/path/to/fontawesome/css/all.min.css">
 <link rel="stylesheet" href="{% static '/css/home.css' %}" />
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 {% endblock %}
 
 {% block body %}
@@ -139,22 +141,24 @@
       <div v-if="selectedItem === 'Buscar clases'">
         <div class="card clasesCard">
           <div class="card-body">
-            <h5 class="card-title heading-4 text-center">Busca a tu profesor ideal</h5>
+            <h1 class="titulodeanuncios heading-4 text-center">Busca a tu profesor ideal</h1>
             <form action="" style="width: 50%;" class="mx-auto mb-5">
-              <input type="search" class="form-control" placeholder="Buscas algo en especial?...">
+              <input type="search" class="barrita" placeholder="Buscas algo en especial?...">
             </form>
-            <h5 class="card-title heading-4 text-center mb-5">Anuncios activos</h5>
+            <h2 class="subtituloanuncios heading-4 text-center mb-5">Anuncios activos</h2>
+            <div class="container cartas-container row mx-2">
             <div class="row">
               {% for anuncio in anuncios %}
-              <div class="col-4">
-                <a href="#">
-                  <div class="card anunciosCards">
-                    <div class="card-body">
+              
+              <div class="col-12 col-md-6 col-lg-4 equal-card mb-1">
+                <div class="card anunciosCards equal-card " onclick="mostrarDetalles('{{ anuncio.titulo }}','{{ anuncio.subTitulo }}', '{{anuncio.descripcion}}', '{{anuncio.precio}}', '{{anuncio.campo.nombre}}')">
+                  <div class="card-body text-center">
+                <a href="#" >
                       <h4 class="heading-4 text-center">{{ anuncio.titulo }}</h4>
                       <h5 class="heading-5 text-center"> {{ anuncio.subTitulo }}</h5>
-                      <p class="parrafo text-center">{{ anuncio.descripcion }}</p>
+                      <p class="parrafo text-center" style="max-height: 100px;">{{ anuncio.descripcion }}</p>
                       <p class="parrafo text-center">$ {{ anuncio.precio }}</p>
-                      <p class="parrafo text-center">{{ anuncio.campo.nombre }}</p>
+                      <p class="parrafo text-center" style="max-height: 100px;">{{ anuncio.campo.nombre }}</p>
                     </div>
                   </div>
                 </a>
@@ -164,8 +168,74 @@
           </div>
         </div>
       </div>
+      </div>
     </transition>
+  </div>
+  <div id="modalAnuncio" class="modal">
+    <div class="modal-content">
+        <span class="cerrar" id="cerrarModal" onclick="cerrarModal()">&times;</span>
+        <div id="detalleAnuncio">
+        <!-- Muestra detalles del anuncio y del profesor -->
+        <h1 id="modalTitulo"></h1>
+        <h5 id="modalsubTitulo"></h5>
+        <p id="modalDescripcion"></p>
+        <p id="modalPrecio"></p>
+        <p id="modalCampo.nombre"></p>
+        
+        <!-- Botón en el modal -->
+        <script>
+          function reservarClase(clase_id) {
+            fetch('/reservar_clase/' + clase_id + '/', {
+              if (!response.ok) {
+                throw new Error('Error al reservar la clase');
+              }
+              return response.json();
+            })
+            .then(data => {
+        // Manejar la respuesta exitosa, por ejemplo, mostrar un mensaje de éxito
+        console.log(data);
+        alert('Clase reservada exitosamente');
+              })
+              .catch(error => {
+                // Manejar el error, por ejemplo, mostrar un mensaje de error
+                console.error('Error al reservar la clase', error);
+                alert('Error al reservar la clase');
+              });
+          }
+          </script>
+          
+          
+
+        <button id="reservarBtn" v-on:click="reservar_clase(Clase)">Solicitar reserva</button>
+
+      </div>
+    </div>
+</div>
+<script>
+  function mostrarDetalles(titulo, subTitulo, descripcion, precio, campo) {
+      // Establece el contenido del modal con los detalles de la carta
+      document.getElementById("inputAvatar")
+      document.getElementById("modalTitulo").innerText = titulo;
+      document.getElementById("modalsubTitulo").innerText = subTitulo;
+      document.getElementById("modalDescripcion").innerText = descripcion;
+      document.getElementById("modalPrecio").innerText = "Precio: $" + precio;
+      document.getElementById("modalCampo.nombre").innerText = "Campo: " + campo;
+      
+
+      // Muestra el modal
+      var modal = document.getElementById("modalAnuncio");
+      modal.style.display = "block";
+  }
+
+  function cerrarModal() {
+      // Cierra el modal
+      var modal = document.getElementById("modalAnuncio");
+      modal.style.display = "none";
+  }
+</script>
     {% endif %}
+
+    
 
     <transition name="slide">
       <div v-if="selectedItem === 'Compra creditos!'">
@@ -320,6 +390,8 @@
             <h1 class="heading-5 text-center mb-5">Modifica tu anuncio</h1>
             <form method="POST">
               {% csrf_token %}
+              {{ form.as_p }}
+              <form type="submit" value=" Modificar Anuncio"></form>
               <div class="row">
                 <div class="col-6">
                   <div class="customInput mb-4">
@@ -374,7 +446,7 @@
     {% endif %}
   </div>
 </div>
-
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <script>
   var app = new Vue({
@@ -388,6 +460,8 @@
   selectedItem: 'Inicio'
     }
   })
+
+  
 
 </script>
 {% endblock %}

@@ -35,6 +35,8 @@ class Anuncio(models.Model):
     descripcion = models.CharField(max_length = 255, blank=True, default='')
     precio = models.IntegerField(blank=True, default=0)
     campo = models.ForeignKey(Campo, on_delete=models.CASCADE, default=1)
+
+    
 class Sesion(models.Model):
     duracion = models.IntegerField(blank=True, default=0)
     fecha = models.DateField(auto_now_add=True)
@@ -72,3 +74,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.username   
     def get_short_name(self):
         return self.username or self.email.split('@')[0]
+    
+
+class Clase(models.Model):
+    profesor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='clases_profesor')
+    fecha_reserva = models.DateField(null=True, blank=True)
+    usuario_reserva = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='clases_reservadas')

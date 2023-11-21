@@ -235,28 +235,132 @@ textarea:focus {
     margin-bottom: 5%;
     border-radius: 1.5rem;
 }
+.titulodeanuncios {
+    font-family: 'Montserrat';
+    font-weight: 700;
+    font-size: 51px;
+    line-height: 62.17px;
+    color: #201F22;
+}
+.barrita {
+    width: 100%;
+    height: 50px;
+    background-color: #BDB7C9;
+    border-radius: 10px;
+}
+.subtituloanuncios {
+    font-family: 'Montserrat';
+    font-weight: 700;
+    font-size: 38px;
+    line-height: 46.32px;
+    color: #201F22;
 
+}
+/*cuadro de los anuncios*/
 .clasesCard {
     margin-left: 4%;
     margin-right: 4%;
     margin-top: 4%;
     margin-bottom: 4%;
     border-radius: 1.5rem;
-    padding: 1rem;
+    padding: 2rem;
+    background-color:#E6E6E6;
+    
+    
 }
-
+/* cartas de los anuncios*/ 
+ .cartas-container {
+    
+    max-height: 400px;
+    overflow-y: auto;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;   
+} 
+.carta {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+/* .carta-personalizada {
+    width: 250px; 
+    height: 300px; 
+} */
 .anunciosCards {
-    border-radius: 1.5rem;
+    border-radius: 3.5rem;
     transition: all 0.1s ease-in-out;
+    background-color: #EFE8A9;
+    margin: 5px;
+    max-width: 400px; 
+    width: 500px;
+    height: 500px;
+    
 }
+  .equal-card {
+    margin-right: 100px;
 
+    
+    
+    
+} 
 .anunciosCards:hover {
     box-shadow: 0 0 5px rgba(33,33,33,.2); 
     transform: scale(1.001);
     transition: all 0.1s ease-in-out;
+    
+    
 }
 
 .profileName:hover {
     color: #FACA52 !important;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #FADE52(0, 0, 0, 0.7);
+    font-family: 'Montserrat';
+
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #FAF2DD;
+    padding: 300px; 
+    text-align: center; 
+    font-family: 'Montserrat';
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+
+    
+    color: #333;
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+.cerrar {
+    position: absolute;
+    top: 10px;
+    right: 50px;
+    font-size: 50px;
+    cursor: pointer;
+}
+#reservarBtn {
+    font-family: 'Montserrat';
+    background-color: #FACA52;
+    color: #201F22;
+    padding: 10px 20px;
+    border: orange 1px solid;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 30px;
 }
 

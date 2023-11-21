@@ -1,8 +1,10 @@
+import datetime
 from django.contrib.auth import get_user_model
-from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
-from .models import Anuncio, Campo, TipoUsuario
+from .models import Anuncio, Campo, Clase, TipoUsuario
 
 User = get_user_model()
 
@@ -99,4 +101,21 @@ def registro(request):
             return render(request, "registro.html")
     else:
         return render(request, "registro.html")
-    
+
+def reservar_clase(request, clase_id):
+    if request.method == "POST":
+        clase = get_object_or_404(Clase, pk=clase_id)
+
+        # Verifica si la clase ya está reservada
+        if clase.usuario_reserva:
+            # Maneja caso de clase ya reservada
+            return JsonResponse({'error': 'La clase ya está reservada'}, status=400)
+
+        # Asigna la clase al usuario actual
+        user = request.user
+        clase.usuario_reserva = user
+        clase.fecha_reserva = datetime.date.today()  
+        clase.save()
+        return JsonResponse({'message': 'Clase reservada exitosamente'})
+        return JsonResponse({'error': 'Método no permitido'}, status=405)
+  
