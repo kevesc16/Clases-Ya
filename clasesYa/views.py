@@ -2,7 +2,11 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
-from .models import Anuncio, Campo, TipoUsuario
+from .models import Anuncio, Campo, TipoUsuario, Reserva
+
+import calendar
+from datetime import datetime
+import locale
 
 User = get_user_model()
 
@@ -27,6 +31,35 @@ def logoutUser(request):
 
 @login_required
 def home(request):
+
+    #Carga de clases reservadas del usuario
+    user = request.user
+
+    if user.tipoUsuario.nombre == "Alumno":
+        reservas = Reserva.objects.filter(idAlumno=user.id)
+        misProfesores = User.objects.filter(tipoUsuario__nombre="Profesor")
+    elif user.tipoUsuario.nombre == "Profesor":
+        reservas = Reserva.objects.filter(idProfesor=user.id)
+        misAlumnos = User.objects.filter(tipoUsuario__nombre="Alumno")
+        print(misAlumnos)
+        for alumno in misAlumnos:
+            print(alumno.nombre)
+
+
+
+
+    #Funciones para el calendario
+    today = datetime.today()
+    month = today.month
+    year = today.year
+
+    #nombre del mes en español
+    locale.setlocale(locale.LC_TIME, 'es_ES.utf8')
+    month_name = calendar.month_name[month]
+
+    cal = calendar.monthcalendar(year, month)
+
+    #Funcion para la creacion de un anuncio
     if request.method == "POST":
         if 'anuncioForm' in request.POST:
             titulo = request.POST.get('inputTitulo')
@@ -48,13 +81,13 @@ def home(request):
             user.anuncio = anuncio
             user.save()
             
-            return redirect('home')
+            return redirect('home', {'user': user, 'anuncios': anuncios, 'calendar': cal, 'month': month, 'year': year, 'monthName': month_name, 'reservas': reservas})
         else:
-            return redirect('home')
+            return redirect('home', {'user': user, 'anuncios': anuncios, 'calendar': cal, 'month': month, 'year': year, 'monthName': month_name, 'reservas': reservas})
     else:
         user = request.user
         anuncios = Anuncio.objects.all()
-        return render(request, "home.html", {'user': user, 'anuncios': anuncios})
+        return render(request, "home.html", {'user': user, 'anuncios': anuncios, 'calendar': cal, 'month': month, 'year': year, 'monthName': month_name, 'reservas': reservas})
 
 def test(request):
     return render(request, "test.html")

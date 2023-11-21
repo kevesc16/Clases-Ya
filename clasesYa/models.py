@@ -19,31 +19,37 @@ class CustomUserManager(UserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         return self._create_user(email, password, **extra_fields)    
+
 class Campo(models.Model):
     nombre = models.CharField(max_length = 255, blank=True, default='')
     class Meta:
         verbose_name = 'Campo'
         verbose_name_plural = 'Campos'
+
 class TipoUsuario(models.Model):
     nombre = models.CharField(max_length = 255, blank=True, default='')
     class Meta:
         verbose_name = 'Tipo de usuario'
         verbose_name_plural = 'Tipos de usuarios'
+
 class Anuncio(models.Model):
     titulo = models.CharField(max_length = 255, blank=True, default='')
     subTitulo = models.CharField(max_length = 255, blank=True, default='')
     descripcion = models.CharField(max_length = 255, blank=True, default='')
     precio = models.IntegerField(blank=True, default=0)
     campo = models.ForeignKey(Campo, on_delete=models.CASCADE, default=1)
+
 class Sesion(models.Model):
     duracion = models.IntegerField(blank=True, default=0)
     fecha = models.DateField(auto_now_add=True)
     hora = models.TimeField(auto_now_add=True)
     anuncio = models.ForeignKey(Anuncio, on_delete=models.CASCADE, default=1)
+
 class Rating(models.Model):
     valor = models.IntegerField(blank=True, default=0)
     comentario = models.CharField(max_length = 255, blank=True, default='')
     sesion = models.ForeignKey(Sesion, on_delete=models.CASCADE, default=1)
+
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(blank = True, default='', unique=True)
     username = models.CharField(max_length = 255, blank=True, default='')
@@ -72,3 +78,24 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.username   
     def get_short_name(self):
         return self.username or self.email.split('@')[0]
+    
+    def __str__(self):
+        return self.email
+
+class Reserva(models.Model):
+    fecha = models.DateField()
+    hora = models.TimeField()
+    idProfesor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='profesor')
+    idAlumno = models.ForeignKey(User, on_delete=models.CASCADE, related_name='alumno')
+    def __str__(self):
+        return 'Code: ' + str(self.id) + ' | ' + str(self.fecha) + ' | ' + str(self.hora) + ' | Profesor: ' + str(self.idProfesor) + ' | Alumno: ' + str(self.idAlumno)
+
+class ChatRoom(models.Model):
+    idProfesor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='profesorChat')
+    idAlumno = models.ForeignKey(User, on_delete=models.CASCADE, related_name='alumnoChat')
+    
+class ChatMessage(models.Model):
+    idChatRoom = models.ForeignKey(ChatRoom, on_delete=models.CASCADE)
+    idUser = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.CharField(max_length = 255, blank=True, default='')
+    timestamp = models.DateTimeField(auto_now_add=True)

@@ -2,6 +2,14 @@
 {% load static %}
 {% block head %}
 <title>Home</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+  integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+  integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <link rel="stylesheet" href="/path/to/fontawesome/css/all.min.css">
 <link rel="stylesheet" href="{% static '/css/home.css' %}" />
@@ -27,7 +35,7 @@
     <img src="{% static '/img/laying.png' %}" alt="" class="layingImg" />
     <div class="profileContainer">
       <img src="{% static '/img/girl3.png' %}" class="avatar" />
-      {% if user.nombre == None %}
+      {% if user.nombre != None %}
       <a href="#" v-on:click.prevent="selectedItem = 'Perfil'" class="nameLink">
         <span class="profileName parrafo">{{ user.nombre }} {{ user.apellido }}</span>
       </a>
@@ -93,13 +101,65 @@
 
     <transition name="slide">
       <div v-if="selectedItem === 'Calendario'">
-        <div class="card ">
-          <h5 class="card-header heading-5">Calendario</h5>
+        <div class="card calendarioCard">
           <div class="card-body">
-            <h5 class="card-title heading-5" style="font-weight: normal;">Special title treatment</h5>
-            <p class="card-text parrafo">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa est recusandae
-              molestiae aut, maiores repellat ut tempora dolorum temporibus nihil sit itaque iusto dolore porro
-              doloremque, beatae cumque, voluptates autem?</p>
+            <h1 class="heading-3 text-center">Calendario de clases {{ monthName }} {{ year }}</h1>
+            <table class="calendarioTabla">
+              <thead>
+                <tr>
+                  <th class="text-center parrafo">Lunes</th>
+                  <th class="text-center parrafo">Martes</th>
+                  <th class="text-center parrafo">Miercoles</th>
+                  <th class="text-center parrafo">Jueves</th>
+                  <th class="text-center parrafo">Viernes</th>
+                  <th class="text-center parrafo">Sabado</th>
+                  <th class="text-center parrafo">Domingo</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for week in calendar %}
+                <tr>
+                  {% for day in week %}
+                  {% if day == 0 %}
+                  <td></td>
+                  {% else %}          
+                  <td class="parrafo 
+                  {% for reserva in reservas %}
+                  {% if day == reserva.fecha.day and month == reserva.fecha.month and year == reserva.fecha.year %}
+                  diaValido
+                  {% endif %}
+                  {% endfor %}" data-bs-toggle="modal" data-bs-target="#diaModal" onclick="seleccionarDia(event)">{{ day }}</td>
+                  
+                  {% endif %}
+                  {% endfor %}
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
+            <h1 class="heading-4 text-center">Tienes clases agendadas para los dias resaltados!</h1>
+
+            <!-- Modal -->
+            <div class="modal fade" id="diaModal" tabindex="-1" aria-labelledby="ediaModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title heading-5" id="diaModalLabel">Tienes las siguientes reservas para el dia seleccionado</h1>
+                  </div>
+                  <div class="modal-body" id="allReservas">
+                    {% for reserva in reservas %}                   
+                      <p class="parrafo" id="{{ reserva.fecha.day }}">{{ monthName }} {{ reserva.fecha.day}} a las {{ reserva.hora }} con {{ reserva.idAlumno }}</p>
+                    {% endfor %}
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary heading-5 botonCustom"
+                      data-bs-dismiss="modal">Salir</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
           </div>
         </div>
       </div>
@@ -107,15 +167,16 @@
 
     <transition name="slide">
       <div v-if="selectedItem === 'Chat'">
-        <div class="card ">
-          <h5 class="card-header heading-5">Chat</h5>
-          <div class="card-body">
-            <h5 class="card-title heading-5" style="font-weight: normal;">Special title treatment</h5>
-            <p class="card-text parrafo">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa est recusandae
-              molestiae aut, maiores repellat ut tempora dolorum temporibus nihil sit itaque iusto dolore porro
-              doloremque, beatae cumque, voluptates autem?</p>
-            <a href="{% url 'logout' %}">logout</a>
-          </div>
+        <div class="card chatCard">
+          <div id="chat-room">
+            <ul id="message-list">
+                <!-- Messages will be added here dynamically -->
+            </ul>
+            <div class="chatControls">
+              <input type="text" class="form-control parrafo" id="inputChat" placeholder="Escribe tu mensaje" name="inputChat"/>
+              <button type="button" class="btn botonCustom heading-6 ms-4" id="send-message">Enviar</button>
+            </div>
+        </div>
         </div>
       </div>
     </transition>
@@ -384,9 +445,10 @@
     {% else %}
   links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Mi anuncio', 'Compra creditos!'],
     {% endif %}
-  selectedItem: 'Inicio'
+  selectedItem: 'Chat'
     }
   })
-
 </script>
+
+<script src="{% static '/js/home.js' %}"></script>
 {% endblock %}
