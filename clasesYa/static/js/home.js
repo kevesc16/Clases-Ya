@@ -1,8 +1,7 @@
 diaSeleccionado = 1;
 
-function seleccionarDia(event){
+function seleccionarDia(event) {
     var diaSeleccionado = event.target.innerHTML;
-    console.log(diaSeleccionado);
 
     var parentElement = document.getElementById('allReservas');
     var children = parentElement.children;

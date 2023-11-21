@@ -11,5 +11,5 @@ urlpatterns = [
     path("home/", views.home, name='home'),
     path("registro/", views.registro, name='registro'),
     path("test/", views.test),
-
+    path('sendMessage/', views.sendMessage, name='sendMessage'),
 ]

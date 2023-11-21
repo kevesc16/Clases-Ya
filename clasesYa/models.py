@@ -25,12 +25,16 @@ class Campo(models.Model):
     class Meta:
         verbose_name = 'Campo'
         verbose_name_plural = 'Campos'
-
+    def __str__(self):
+        return 'Code: ' + str(self.id) + ' | Nombre: '  + self.nombre
+    
 class TipoUsuario(models.Model):
     nombre = models.CharField(max_length = 255, blank=True, default='')
     class Meta:
         verbose_name = 'Tipo de usuario'
         verbose_name_plural = 'Tipos de usuarios'
+    def __str__(self):
+        return 'Code: ' + str(self.id) + ' | Nombre: '  + self.nombre
 
 class Anuncio(models.Model):
     titulo = models.CharField(max_length = 255, blank=True, default='')
@@ -88,14 +92,18 @@ class Reserva(models.Model):
     idProfesor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='profesor')
     idAlumno = models.ForeignKey(User, on_delete=models.CASCADE, related_name='alumno')
     def __str__(self):
-        return 'Code: ' + str(self.id) + ' | ' + str(self.fecha) + ' | ' + str(self.hora) + ' | Profesor: ' + str(self.idProfesor) + ' | Alumno: ' + str(self.idAlumno)
+        return 'Fecha: ' + str(self.fecha) + ' | ' + str(self.hora) + ' | Profesor: ' + str(self.idProfesor) + ' | Alumno: ' + str(self.idAlumno)
 
 class ChatRoom(models.Model):
     idProfesor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='profesorChat')
     idAlumno = models.ForeignKey(User, on_delete=models.CASCADE, related_name='alumnoChat')
+    def __str__(self):
+        return 'Profesor: ' + str(self.idProfesor) + ' | Alumno: ' + str(self.idAlumno)
     
 class ChatMessage(models.Model):
     idChatRoom = models.ForeignKey(ChatRoom, on_delete=models.CASCADE)
     idUser = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.CharField(max_length = 255, blank=True, default='')
     timestamp = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return 'Usuario: ' + str(self.idUser) + ' | Mensaje: ' + str(self.message) + ' | Timestamp: ' + str(self.timestamp)

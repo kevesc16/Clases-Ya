@@ -10,8 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
   integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-<link rel="stylesheet" href="/path/to/fontawesome/css/all.min.css">
+
 <link rel="stylesheet" href="{% static '/css/home.css' %}" />
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 {% endblock %}
@@ -42,7 +41,7 @@
       {% else %}
       <a href="#" v-on:click.prevent="selectedItem = 'Perfil'" class="nameLink">
         <span class="profileName parrafo">{{ user.email }}</span>
-        {% endif %}
+      {% endif %}
       </a>
     </div>
   </div>
@@ -93,7 +92,7 @@
           <div class="card-body">
             <h5 class="card-title heading-5" style="font-weight: normal;">Special title treatment</h5>
             <p class="card-text parrafo">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" class="btn botonCustom heading-6">Go somewhere</a>
+            <a href="{% url 'logout' %}" class="btn botonCustom heading-6">Go somewhere</a>
           </div>
         </div>
       </div>
@@ -122,14 +121,14 @@
                   {% for day in week %}
                   {% if day == 0 %}
                   <td></td>
-                  {% else %}          
+                  {% else %}
                   <td class="parrafo 
                   {% for reserva in reservas %}
                   {% if day == reserva.fecha.day and month == reserva.fecha.month and year == reserva.fecha.year %}
                   diaValido
                   {% endif %}
                   {% endfor %}" data-bs-toggle="modal" data-bs-target="#diaModal" onclick="seleccionarDia(event)">{{ day }}</td>
-                  
+
                   {% endif %}
                   {% endfor %}
                 </tr>
@@ -144,11 +143,12 @@
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h1 class="modal-title heading-5" id="diaModalLabel">Tienes las siguientes reservas para el dia seleccionado</h1>
+                    <h1 class="modal-title heading-5" id="diaModalLabel">Tienes las siguientes reservas para el dia
+                      seleccionado</h1>
                   </div>
                   <div class="modal-body" id="allReservas">
-                    {% for reserva in reservas %}                   
-                      <p class="parrafo" id="{{ reserva.fecha.day }}">{{ monthName }} {{ reserva.fecha.day}} a las {{ reserva.hora }} con {{ reserva.idAlumno }}</p>
+                    {% for reserva in reservas %}
+                    <p class="parrafo" id="{{ reserva.fecha.day }}">{{ monthName }} {{ reserva.fecha.day }} a las {{ reserva.hora }} con {{ reserva.idAlumno }}</p>
                     {% endfor %}
                   </div>
                   <div class="modal-footer">
@@ -169,16 +169,49 @@
       <div v-if="selectedItem === 'Chat'">
         <div class="card chatCard">
           <div id="chat-room">
-            <ul id="message-list">
-                <!-- Messages will be added here dynamically -->
-            </ul>
-            <div class="chatControls">
-              <input type="text" class="form-control parrafo" id="inputChat" placeholder="Escribe tu mensaje" name="inputChat"/>
-              <button type="button" class="btn botonCustom heading-6 ms-4" id="send-message">Enviar</button>
+            <div class="chatContainer">
+
+              <div class="listaUsuarios">
+                <ul>
+                {% for usuario in usuarios %}   
+                  <a id="button-{{ usuario.email }}">
+                    <li class="py-2 sideItem parrafo">{% if user.nombre != None %} {{ usuario.nombre }} {{ usuario.apellido }} {% else %} {{ usuario.email }}{% endif %}</li>
+                  </a>
+                {% endfor %}
+              </ul>
+              </div>
+
+              
+              {% for room in chatRooms %}
+              <div class="chatBox p-3" id="chat-{{ room.id }}" style="display: none;">
+                {% for mensaje in chatMessages %}
+
+                {% if mensaje.idChatRoom.id == room.id %}
+                
+                {% if mensaje.idUser.id == user.id %}
+                <p class="parrafo message leMyself">{{ mensaje.message }}<br>{{ mensaje.timestamp.time }} {{ mensaje.idUser }} </p>
+                {% else %}
+                <p class="parrafo message leOthers"> {{ mensaje.message }}<br>{{ mensaje.timestamp.time }} {{ mensaje.idUser }}</p>
+                {% endif %}
+
+                {% endif %}
+
+                {% endfor %}
+              </div>
+              {% endfor %}
+              
             </div>
-        </div>
+            
+            <div class="chatControls mt-5">
+              <input type="text" class="form-control parrafo" id="inputChat" placeholder="Escribe tu mensaje..."
+                name="inputChat" />
+              <button type="button" class="btn botonEnviar heading-6 ms-4" id="sendMessage">Enviar</button>
+            </div>
+            
+          </div>
         </div>
       </div>
+    
     </transition>
 
     <transition name="slide">
@@ -237,6 +270,7 @@
             <p class="card-text parrafo">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa est recusandae
               molestiae aut, maiores repellat ut tempora dolorum temporibus nihil sit itaque iusto dolore porro
               doloremque, beatae cumque, voluptates autem?</p>
+              <button id="get-email">Get Email</button>
           </div>
         </div>
       </div>
@@ -435,20 +469,55 @@
   </div>
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
   var app = new Vue({
     el: '#mainContainer',
     data: {
       {% if user.tipoUsuario.id == 2 %}
-  links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Buscar clases', 'Compra creditos!'],
-    {% else %}
-  links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Mi anuncio', 'Compra creditos!'],
-    {% endif %}
-  selectedItem: 'Chat'
+        links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Buscar clases', 'Compra creditos!'],
+      {% else %}
+        links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Mi anuncio', 'Compra creditos!'],
+      {% endif %}
+      selectedItem: 'Chat'
+    },
+    methods: {
+      handleClick: function (link) {
+        this.selectedItem = link;
+      }
     }
   })
 </script>
+
+<script>
+
+
+    let tipoUsuario = {{ user.tipoUsuario.id }};
+    {% for usuario in usuarios %}
+    document.getElementById('button-{{ usuario.email }}').addEventListener('click', function() {
+      // Hide all chat rooms
+      {% for room in chatRooms %}
+      document.getElementById('chat-{{ room.id }}').style.display = 'none';
+      {% endfor %}
+      {% if user.tipoUsuario.id == 1 %}
+        {% for room in chatRooms %}
+        if('{{ usuario.email }}' == '{{ room.idAlumno.email }}'){
+          document.getElementById('chat-{{ room.id }}').style.display = 'flex';
+        }
+        {% endfor %}
+      {% endif %}
+      {% if user.tipoUsuario.id == 2 %}
+        {% for room in chatRooms %}
+        if('{{ usuario.email }}' == '{{ room.idProfesor.email }}'){
+          document.getElementById('chat-{{ room.id }}').style.display = 'flex';
+        }
+        {% endfor %}
+      {% endif %}
+    });
+    {% endfor %}
+
+  </script>
 
 <script src="{% static '/js/home.js' %}"></script>
 {% endblock %}

@@ -2,11 +2,18 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
-from .models import Anuncio, Campo, TipoUsuario, Reserva
+from .models import Anuncio, Campo, TipoUsuario, Reserva, ChatRoom, ChatMessage
+from django.http import JsonResponse
 
 import calendar
 from datetime import datetime
 import locale
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+
+
 
 User = get_user_model()
 
@@ -32,20 +39,23 @@ def logoutUser(request):
 @login_required
 def home(request):
 
-    #Carga de clases reservadas del usuario
+    #Carga de reservas, usuarios y chats
     user = request.user
+    anuncios = Anuncio.objects.all()
 
     if user.tipoUsuario.nombre == "Alumno":
         reservas = Reserva.objects.filter(idAlumno=user.id)
-        misProfesores = User.objects.filter(tipoUsuario__nombre="Profesor")
+        profesor_ids = reservas.values_list('idProfesor', flat=True)
+        usuarios = User.objects.filter(id__in=profesor_ids)
+        chatRooms = ChatRoom.objects.filter(idAlumno=user.id)
+        chatMessages = ChatMessage.objects.filter(idChatRoom__in=chatRooms)
+
     elif user.tipoUsuario.nombre == "Profesor":
         reservas = Reserva.objects.filter(idProfesor=user.id)
-        misAlumnos = User.objects.filter(tipoUsuario__nombre="Alumno")
-        print(misAlumnos)
-        for alumno in misAlumnos:
-            print(alumno.nombre)
-
-
+        alumno_ids = reservas.values_list('idAlumno', flat=True)
+        usuarios = User.objects.filter(id__in=alumno_ids)
+        chatRooms = ChatRoom.objects.filter(idProfesor=user.id)
+        chatMessages = ChatMessage.objects.filter(idChatRoom__in=chatRooms)
 
 
     #Funciones para el calendario
@@ -81,13 +91,12 @@ def home(request):
             user.anuncio = anuncio
             user.save()
             
-            return redirect('home', {'user': user, 'anuncios': anuncios, 'calendar': cal, 'month': month, 'year': year, 'monthName': month_name, 'reservas': reservas})
+            return redirect('home', {'user': user, 'anuncios': anuncios, 'calendar': cal, 'month': month, 'year': year, 'monthName': month_name, 'reservas': reservas, 'usuarios': usuarios, 'chatMessages': chatMessages, 'chatRooms': chatRooms})
         else:
-            return redirect('home', {'user': user, 'anuncios': anuncios, 'calendar': cal, 'month': month, 'year': year, 'monthName': month_name, 'reservas': reservas})
+            return redirect('home', {'user': user, 'anuncios': anuncios, 'calendar': cal, 'month': month, 'year': year, 'monthName': month_name, 'reservas': reservas, 'usuarios': usuarios, 'chatMessages': chatMessages, 'chatRooms': chatRooms})
     else:
-        user = request.user
-        anuncios = Anuncio.objects.all()
-        return render(request, "home.html", {'user': user, 'anuncios': anuncios, 'calendar': cal, 'month': month, 'year': year, 'monthName': month_name, 'reservas': reservas})
+
+        return render(request, "home.html", {'user': user, 'anuncios': anuncios, 'calendar': cal, 'month': month, 'year': year, 'monthName': month_name, 'reservas': reservas, 'usuarios': usuarios, 'chatMessages': chatMessages, 'chatRooms': chatRooms})
 
 def test(request):
     return render(request, "test.html")
@@ -108,3 +117,25 @@ def registro(request):
     else:
         return render(request, "registro.html")
     
+
+@csrf_exempt
+def sendMessage(request):
+    if request.method == 'POST':
+        message = request.POST.get('message')
+        idUser = request.user
+        idChatRoom = request.POST.get('idChatRoom')
+        timestamp = datetime.now()
+        chatMessage = ChatMessage(message=message, idUser=idUser, idChatRoom=idChatRoom, timestamp=timestamp)
+        chatMessage.save()
+        return JsonResponse({'status': 'success', 'message': 'Mensaje enviado'})
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Error al enviar el mensaje'})
+
+
+       
+
+    
+    #idChatRoom = models.ForeignKey(ChatRoom, on_delete=models.CASCADE)
+    #idUser = models.ForeignKey(User, on_delete=models.CASCADE)
+    #message = models.CharField(max_length = 255, blank=True, default='')
+    #timestamp = models.DateTimeField(auto_now_add=True)
