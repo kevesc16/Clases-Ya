@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} 
 {% load static %}
 {% block head %}
 <title>Home</title>
@@ -10,11 +10,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
   integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 
-
 <link rel="stylesheet" href="{% static '/css/home.css' %}" />
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 {% endblock %}
-
 {% block body %}
 <div class="mainContainer" id="mainContainer">
   <div class="leftContainer">
@@ -26,7 +24,9 @@
       <ul>
         {% verbatim %}
         <a href="#" v-for="link in links" v-on:click="selectedItem = link">
-          <li class="py-2 sideItem parrafo" v-bind:class="{ 'selected': selectedItem === link }">{{ link }}</li>
+          <li class="py-2 sideItem parrafo" v-bind:class="{ 'selected': selectedItem === link }">
+            {{ link }}
+          </li>
         </a>
         {% endverbatim %}
       </ul>
@@ -41,13 +41,12 @@
       {% else %}
       <a href="#" v-on:click.prevent="selectedItem = 'Perfil'" class="nameLink">
         <span class="profileName parrafo">{{ user.email }}</span>
-      {% endif %}
+        {% endif %}
       </a>
     </div>
   </div>
 
   <div class="rightContainer">
-
     <transition name="slide">
       <div v-if="selectedItem === 'Inicio'">
         <div id="carouselHome" class="carousel slide customCarousel">
@@ -62,36 +61,49 @@
               <img src="{% static '/img/custom.png' %}" class="d-block carouselImg" />
               <div class="carousel-caption d-none d-md-block">
                 <h5 class="tituloCarousel">Personaliza tu perfil</h5>
-                <p class="subTituloCarousel">Un perfil personalizado ayudara a tus estudiantes a tener una mejor idea de
-                  tus metodos de enseñanza</p>
+                <p class="subTituloCarousel">
+                  Un perfil personalizado ayudara a tus estudiantes a tener una
+                  mejor idea de tus metodos de enseñanza
+                </p>
               </div>
             </div>
             <div class="carousel-item">
               <img src="{% static '/img/custom.png' %}" class="d-block carouselImg" />
               <div class="carousel-caption d-none d-md-block">
                 <h5 class="tituloCarousel">Second slide label</h5>
-                <p class="subTituloCarousel">Some representative placeholder content for the second slide.</p>
+                <p class="subTituloCarousel">
+                  Some representative placeholder content for the second slide.
+                </p>
               </div>
             </div>
             <div class="carousel-item">
               <img src="{% static '/img/custom.png' %}" class="d-block carouselImg" />
               <div class="carousel-caption d-none d-md-block">
                 <h5 class="tituloCarousel">Third slide label</h5>
-                <p class="subTituloCarousel">Some representative placeholder content for the third slide.</p>
+                <p class="subTituloCarousel">
+                  Some representative placeholder content for the third slide.
+                </p>
               </div>
             </div>
           </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#carouselHome" data-bs-slide="prev"><span
-              class="carousel-control-prev-icon" aria-hidden="true"></span></button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselHome" data-bs-slide="next"><span
-              class="carousel-control-next-icon" aria-hidden="true"></span></button>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselHome" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselHome" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          </button>
         </div>
 
         <div class="card recordatorioCustom">
           <h5 class="card-header heading-5">Recordatorios</h5>
           <div class="card-body">
-            <h5 class="card-title heading-5" style="font-weight: normal;">Special title treatment</h5>
-            <p class="card-text parrafo">With supporting text below as a natural lead-in to additional content.</p>
+            <h5 class="card-title heading-5" style="font-weight: normal">
+              Special title treatment
+            </h5>
+            <p class="card-text parrafo">
+              With supporting text below as a natural lead-in to additional
+              content.
+            </p>
             <a href="{% url 'logout' %}" class="btn botonCustom heading-6">Go somewhere</a>
           </div>
         </div>
@@ -102,7 +114,9 @@
       <div v-if="selectedItem === 'Calendario'">
         <div class="card calendarioCard">
           <div class="card-body">
-            <h1 class="heading-3 text-center">Calendario de clases {{ monthName }} {{ year }}</h1>
+            <h1 class="heading-3 text-center">
+              Calendario de clases {{ monthName }} {{ year }}
+            </h1>
             <table class="calendarioTabla">
               <thead>
                 <tr>
@@ -118,48 +132,49 @@
               <tbody>
                 {% for week in calendar %}
                 <tr>
-                  {% for day in week %}
-                  {% if day == 0 %}
+                  {% for day in week %} {% if day == 0 %}
                   <td></td>
                   {% else %}
-                  <td class="parrafo 
-                  {% for reserva in reservas %}
-                  {% if day == reserva.fecha.day and month == reserva.fecha.month and year == reserva.fecha.year %}
-                  diaValido
-                  {% endif %}
-                  {% endfor %}" data-bs-toggle="modal" data-bs-target="#diaModal" onclick="seleccionarDia(event)">{{ day }}</td>
+                  <td
+                    class="parrafo {% for reserva in reservas %} {% if day == reserva.fecha.day and month == reserva.fecha.month and year == reserva.fecha.year %} diaValido {% endif %} {% endfor %}"
+                    data-bs-toggle="modal" data-bs-target="#diaModal" onclick="seleccionarDia(event)">
+                    {{ day }}
+                  </td>
 
-                  {% endif %}
-                  {% endfor %}
+                  {% endif %} {% endfor %}
                 </tr>
                 {% endfor %}
               </tbody>
             </table>
 
-            <h1 class="heading-4 text-center">Tienes clases agendadas para los dias resaltados!</h1>
+            <h1 class="heading-4 text-center">
+              Tienes clases agendadas para los dias resaltados!
+            </h1>
 
             <!-- Modal -->
             <div class="modal fade" id="diaModal" tabindex="-1" aria-labelledby="ediaModalLabel" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h1 class="modal-title heading-5" id="diaModalLabel">Tienes las siguientes reservas para el dia
-                      seleccionado</h1>
+                    <h1 class="modal-title heading-5" id="diaModalLabel">
+                      Tienes las siguientes reservas para el dia seleccionado
+                    </h1>
                   </div>
                   <div class="modal-body" id="allReservas">
                     {% for reserva in reservas %}
-                    <p class="parrafo" id="{{ reserva.fecha.day }}">{{ monthName }} {{ reserva.fecha.day }} a las {{ reserva.hora }} con {{ reserva.idAlumno }}</p>
+                    <p class="parrafo" id="{{ reserva.fecha.day }}">
+                      {{ monthName }} {{ reserva.fecha.day }} a las {{ reserva.hora }} con {{ reserva.idAlumno }}
+                    </p>
                     {% endfor %}
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary heading-5 botonCustom"
-                      data-bs-dismiss="modal">Salir</button>
+                    <button type="button" class="btn btn-secondary heading-5 botonCustom" data-bs-dismiss="modal">
+                      Salir
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
-
-
           </div>
         </div>
       </div>
@@ -170,59 +185,57 @@
         <div class="card chatCard">
           <div id="chat-room">
             <div class="chatContainer">
-
               <div class="listaUsuarios">
                 <ul>
-                {% for usuario in usuarios %}   
-                  <a id="button-{{ usuario.email }}">
-                    <li class="py-2 sideItem parrafo">{% if user.nombre != None %} {{ usuario.nombre }} {{ usuario.apellido }} {% else %} {{ usuario.email }}{% endif %}</li>
+                  <a id="button-{{ usuario.email }}" @click="handleClick" v-for="usuario in usuarios">
+                    <li class="py-2 sideItem parrafo">
+                      {{ usuario }}
+                    </li>
                   </a>
-                {% endfor %}
-              </ul>
+                </ul>
               </div>
 
-              
               {% for room in chatRooms %}
-              <div class="chatBox p-3" id="chat-{{ room.id }}" style="display: none;">
-                {% for mensaje in chatMessages %}
-
-                {% if mensaje.idChatRoom.id == room.id %}
-                
-                {% if mensaje.idUser.id == user.id %}
-                <p class="parrafo message leMyself">{{ mensaje.message }}<br>{{ mensaje.timestamp.time }} {{ mensaje.idUser }} </p>
+              <div class="chatBox p-3" id="chat-{{ room.id }}" style="display: none">
+                {% for mensaje in chatMessages %} {% if mensaje.idChatRoom.id == room.id %} {% if mensaje.idUser.id == user.id %}
+                <p class="parrafo message leMyself">
+                  {{ mensaje.message }}<br />{{ mensaje.timestamp.time }} {{ mensaje.idUser }}
+                </p>
                 {% else %}
-                <p class="parrafo message leOthers"> {{ mensaje.message }}<br>{{ mensaje.timestamp.time }} {{ mensaje.idUser }}</p>
-                {% endif %}
-
-                {% endif %}
-
-                {% endfor %}
+                <p class="parrafo message leOthers">
+                  {{ mensaje.message }}<br />{{ mensaje.timestamp.time }} {{ mensaje.idUser }}
+                </p>
+                {% endif %} {% endif %} {% endfor %}
               </div>
               {% endfor %}
-              
             </div>
-            
+
             <div class="chatControls mt-5">
               <input type="text" class="form-control parrafo" id="inputChat" placeholder="Escribe tu mensaje..."
                 name="inputChat" />
-              <button type="button" class="btn botonEnviar heading-6 ms-4" id="sendMessage">Enviar</button>
+              <button type="button" class="btn botonEnviar heading-6 ms-4" id="sendMessage">
+                Enviar
+              </button>
             </div>
-            
           </div>
         </div>
       </div>
-    
     </transition>
 
     <transition name="slide">
       <div v-if="selectedItem === 'Ingresa a tu clase'">
-        <div class="card ">
+        <div class="card">
           <h5 class="card-header heading-5">Clases</h5>
           <div class="card-body">
-            <h5 class="card-title heading-5" style="font-weight: normal;">Special title treatment</h5>
-            <p class="card-text parrafo">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa est recusandae
-              molestiae aut, maiores repellat ut tempora dolorum temporibus nihil sit itaque iusto dolore porro
-              doloremque, beatae cumque, voluptates autem?</p>
+            <h5 class="card-title heading-5" style="font-weight: normal">
+              Special title treatment
+            </h5>
+            <p class="card-text parrafo">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa est
+              recusandae molestiae aut, maiores repellat ut tempora dolorum
+              temporibus nihil sit itaque iusto dolore porro doloremque, beatae
+              cumque, voluptates autem?
+            </p>
           </div>
         </div>
       </div>
@@ -233,22 +246,34 @@
       <div v-if="selectedItem === 'Buscar clases'">
         <div class="card clasesCard">
           <div class="card-body">
-            <h5 class="card-title heading-4 text-center">Busca a tu profesor ideal</h5>
-            <form action="" style="width: 50%;" class="mx-auto mb-5">
-              <input type="search" class="form-control" placeholder="Buscas algo en especial?...">
+            <h5 class="card-title heading-4 text-center">
+              Busca a tu profesor ideal
+            </h5>
+            <form action="" style="width: 50%" class="mx-auto mb-5">
+              <input type="search" class="form-control" placeholder="Buscas algo en especial?..." />
             </form>
-            <h5 class="card-title heading-4 text-center mb-5">Anuncios activos</h5>
+            <h5 class="card-title heading-4 text-center mb-5">
+              Anuncios activos
+            </h5>
             <div class="row">
               {% for anuncio in anuncios %}
               <div class="col-4">
                 <a href="#">
                   <div class="card anunciosCards">
                     <div class="card-body">
-                      <h4 class="heading-4 text-center">{{ anuncio.titulo }}</h4>
-                      <h5 class="heading-5 text-center"> {{ anuncio.subTitulo }}</h5>
-                      <p class="parrafo text-center">{{ anuncio.descripcion }}</p>
+                      <h4 class="heading-4 text-center">
+                        {{ anuncio.titulo }}
+                      </h4>
+                      <h5 class="heading-5 text-center">
+                        {{ anuncio.subTitulo }}
+                      </h5>
+                      <p class="parrafo text-center">
+                        {{ anuncio.descripcion }}
+                      </p>
                       <p class="parrafo text-center">$ {{ anuncio.precio }}</p>
-                      <p class="parrafo text-center">{{ anuncio.campo.nombre }}</p>
+                      <p class="parrafo text-center">
+                        {{ anuncio.campo.nombre }}
+                      </p>
                     </div>
                   </div>
                 </a>
@@ -263,14 +288,19 @@
 
     <transition name="slide">
       <div v-if="selectedItem === 'Compra creditos!'">
-        <div class="card ">
+        <div class="card">
           <h5 class="card-header heading-5">Creditos</h5>
           <div class="card-body">
-            <h5 class="card-title heading-5" style="font-weight: normal;">Special title treatment</h5>
-            <p class="card-text parrafo">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa est recusandae
-              molestiae aut, maiores repellat ut tempora dolorum temporibus nihil sit itaque iusto dolore porro
-              doloremque, beatae cumque, voluptates autem?</p>
-              <button id="get-email">Get Email</button>
+            <h5 class="card-title heading-5" style="font-weight: normal">
+              Special title treatment
+            </h5>
+            <p class="card-text parrafo">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa est
+              recusandae molestiae aut, maiores repellat ut tempora dolorum
+              temporibus nihil sit itaque iusto dolore porro doloremque, beatae
+              cumque, voluptates autem?
+            </p>
+            <button id="get-email">Get Email</button>
           </div>
         </div>
       </div>
@@ -279,13 +309,12 @@
     <transition name="slide">
       <div v-if="selectedItem === 'Perfil'">
         <div class="card profileCard">
-          <div class="card-body  m-0 p-0">
-            <img src="{% static '/img/bannerPink.png' %}" alt="" class="banner-img">
-            <img src="{% static '/img/girlAvatar.png' %}" alt="" class="avatar-img">
+          <div class="card-body m-0 p-0">
+            <img src="{% static '/img/bannerPink.png' %}" alt="" class="banner-img" />
+            <img src="{% static '/img/girlAvatar.png' %}" alt="" class="avatar-img" />
 
             <div class="row mx-4 customRow">
-
-              <div class="col-6 ">
+              <div class="col-6">
                 <div class="customInput mb-4">
                   <label for="inputNombre" class="form-label parrafo">Nombre</label>
 
@@ -293,7 +322,7 @@
                 </div>
               </div>
 
-              <div class="col-6 ">
+              <div class="col-6">
                 <div class="customInput mb-4">
                   <label for="inputApellido" class="form-label parrafo">Apellido</label>
 
@@ -302,7 +331,7 @@
                 </div>
               </div>
 
-              <div class="col-6 ">
+              <div class="col-6">
                 <div class="customInput mb-4">
                   <label for="inputEmail" class="form-label parrafo">Correo electronico</label>
 
@@ -310,7 +339,7 @@
                 </div>
               </div>
 
-              <div class="col-6 ">
+              <div class="col-6">
                 <div class="customInput mb-4">
                   <label for="inputUsername" class="form-label parrafo">Nombre de usuario</label>
 
@@ -326,7 +355,6 @@
                   <input type="file" class="form-control parrafo" id="inputAvatar" />
                 </div>
               </div>
-
 
               <div class="col-6 customCol">
                 <div class="customInput mb-4">
@@ -348,7 +376,9 @@
 
               <div class="col-6 d-flex justify-content-center">
                 <div class="mt-auto">
-                  <button type="button" class="btn botonCustom heading-6">Confirmar cambios</button>
+                  <button type="button" class="btn botonCustom heading-6">
+                    Confirmar cambios
+                  </button>
                 </div>
               </div>
             </div>
@@ -363,7 +393,9 @@
         <div class="card anuncioCard">
           <div class="card-body">
             {% if user.anuncio == None %}
-            <h1 class="heading-5 text-center mb-5">Empieza a crear tu anuncio para que los alumnos te encuentren!</h1>
+            <h1 class="heading-5 text-center mb-5">
+              Empieza a crear tu anuncio para que los alumnos te encuentren!
+            </h1>
             <form method="POST" action="{% url 'home' %}" id="anuncioForm">
               {% csrf_token %}
               <div class="row">
@@ -398,15 +430,16 @@
                 <div class="col-12">
                   <div class="customInput mb-4">
                     <label for="inputPrecio" class="form-label parrafo text-center"
-                      style="width: 100%;">Descripcion</label>
+                      style="width: 100%">Descripcion</label>
                     <textarea class="customTextArea" name="inputDescripcion" id="inputDescripcion" rows="10"
                       placeholder="Ingresa una descripcion para tu anuncio"></textarea>
                   </div>
                 </div>
                 <div class="col-12">
                   <div class="customInput mb-4 text-center">
-                    <button type="submit" name="anuncioForm" value="anuncioForm" class="btn botonCustom heading-6">Crear
-                      Anuncio</button>
+                    <button type="submit" name="anuncioForm" value="anuncioForm" class="btn botonCustom heading-6">
+                      Crear Anuncio
+                    </button>
                   </div>
                 </div>
               </div>
@@ -447,7 +480,7 @@
                 <div class="col-12">
                   <div class="customInput mb-4">
                     <label for="inputPrecio" class="form-label parrafo text-center"
-                      style="width: 100%;">Descripcion</label>
+                      style="width: 100%">Descripcion</label>
                     <textarea class="customTextArea" name="inputDescripcion" id="inputDescripcion" rows="10"
                       placeholder="{{ user.anuncio.descripcion }}"></textarea>
                   </div>
@@ -455,7 +488,9 @@
                 <div class="col-12">
                   <div class="customInput mb-4 text-center">
                     <button type="submit" name="anuncioForm" value="anuncioUpdateForm"
-                      class="btn botonCustom heading-6">Confirmar cambios</button>
+                      class="btn botonCustom heading-6">
+                      Confirmar cambios
+                    </button>
                   </div>
                 </div>
               </div>
@@ -476,48 +511,23 @@
     el: '#mainContainer',
     data: {
       {% if user.tipoUsuario.id == 2 %}
-        links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Buscar clases', 'Compra creditos!'],
+      links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Buscar clases', 'Compra creditos!'],
       {% else %}
-        links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Mi anuncio', 'Compra creditos!'],
+      links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Mi anuncio', 'Compra creditos!'],
       {% endif %}
       selectedItem: 'Chat'
     },
-    methods: {
-      handleClick: function (link) {
-        this.selectedItem = link;
-      }
-    }
   })
 </script>
 
-<script>
-
-
-    let tipoUsuario = {{ user.tipoUsuario.id }};
-    {% for usuario in usuarios %}
-    document.getElementById('button-{{ usuario.email }}').addEventListener('click', function() {
-      // Hide all chat rooms
-      {% for room in chatRooms %}
-      document.getElementById('chat-{{ room.id }}').style.display = 'none';
-      {% endfor %}
-      {% if user.tipoUsuario.id == 1 %}
-        {% for room in chatRooms %}
-        if('{{ usuario.email }}' == '{{ room.idAlumno.email }}'){
-          document.getElementById('chat-{{ room.id }}').style.display = 'flex';
-        }
-        {% endfor %}
-      {% endif %}
-      {% if user.tipoUsuario.id == 2 %}
-        {% for room in chatRooms %}
-        if('{{ usuario.email }}' == '{{ room.idProfesor.email }}'){
-          document.getElementById('chat-{{ room.id }}').style.display = 'flex';
-        }
-        {% endfor %}
-      {% endif %}
-    });
-    {% endfor %}
-
-  </script>
+<script type="text/javascript">
+  let url = `ws://${window.location.host}/ws/socket-server`;
+  const chatSocket = new WebSocket(url);
+  chatSocket.onmessage = function(e){
+    let data = JSON.parse(e.data);
+    console.log('data: ', data);
+  }
+</script>
 
 <script src="{% static '/js/home.js' %}"></script>
 {% endblock %}
