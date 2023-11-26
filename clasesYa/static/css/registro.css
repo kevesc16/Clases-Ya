@@ -35,6 +35,14 @@
     margin-top: 1rem;
 }
 
+a {
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: #FAF252 !important;
+}
+
 .botonTop {
     background-color: #201F22;
     border-color: #201F22;

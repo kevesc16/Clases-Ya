@@ -111,6 +111,14 @@ body {
     box-shadow: 0 0 0 0.2rem #FADE52;
 }
 
+a {
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: #FAF252 !important;
+}
+
 @media (max-width: 768px) {
     .customImg1 {
         display: none;

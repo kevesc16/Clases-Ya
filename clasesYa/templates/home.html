@@ -36,11 +36,11 @@
       <img src="{% static '/img/girl3.png' %}" class="avatar" />
       {% if user.nombre != None %}
       <a href="#" v-on:click.prevent="selectedItem = 'Perfil'" class="nameLink">
-        <span class="profileName parrafo">{{ user.nombre }} {{ user.apellido }}</span>
+        <span class="profileName parrafo">{{ user.email }}</span>
       </a>
       {% else %}
       <a href="#" v-on:click.prevent="selectedItem = 'Perfil'" class="nameLink">
-        <span class="profileName parrafo">{{ user.email }}</span>
+        <span class="profileName parrafo">{{ user.nombre }} {{ user.apellido }}</span>
         {% endif %}
       </a>
     </div>
@@ -48,7 +48,7 @@
 
   <div class="rightContainer">
     <transition name="slide">
-      <div v-if="selectedItem === 'Inicio'">
+      <div v-if="selectedItem === 'Inicio'" class="menuSlide">
         <div id="carouselHome" class="carousel slide customCarousel">
           <div class="carousel-indicators">
             <button type="button" data-bs-target="#carouselHome" data-bs-slide-to="0" class="active"
@@ -111,7 +111,7 @@
     </transition>
 
     <transition name="slide">
-      <div v-if="selectedItem === 'Calendario'">
+      <div v-if="selectedItem === 'Calendario'" class="menuSlide">
         <div class="card calendarioCard">
           <div class="card-body">
             <h1 class="heading-3 text-center">
@@ -132,16 +132,25 @@
               <tbody>
                 {% for week in calendar %}
                 <tr>
-                  {% for day in week %} {% if day == 0 %}
+                  {% for day in week %}
+                  {% if day == 0 %}
                   <td></td>
                   {% else %}
                   <td
-                    class="parrafo {% for reserva in reservas %} {% if day == reserva.fecha.day and month == reserva.fecha.month and year == reserva.fecha.year %} diaValido {% endif %} {% endfor %}"
-                    data-bs-toggle="modal" data-bs-target="#diaModal" onclick="seleccionarDia(event)">
-                    {{ day }}
-                  </td>
-
-                  {% endif %} {% endfor %}
+                    class="parrafo
+                    {% for reserva in reservas %}
+                    {% if day == reserva.fecha.day and month == reserva.fecha.month and year == reserva.fecha.year %}
+                    diaValido 
+                    {% endif %} 
+                    {% endfor %}"                    
+                    {% for reserva in reservas %}
+                    {% if day == reserva.fecha.day and month == reserva.fecha.month and year == reserva.fecha.year %}
+                    data-bs-toggle="modal" data-bs-target="#diaModal" 
+                    onclick="seleccionarDia(event)"
+                    {% endif %} 
+                    {% endfor %}>{{ day }}</td>
+                  {% endif %} 
+                  {% endfor %}
                 </tr>
                 {% endfor %}
               </tbody>
@@ -162,7 +171,7 @@
                   </div>
                   <div class="modal-body" id="allReservas">
                     {% for reserva in reservas %}
-                    <p class="parrafo" id="{{ reserva.fecha.day }}">
+                    <p class="parrafo {{ reserva.fecha.day }}">
                       {{ monthName }} {{ reserva.fecha.day }} a las {{ reserva.hora }} con {{ reserva.idAlumno }}
                     </p>
                     {% endfor %}
@@ -181,49 +190,88 @@
     </transition>
 
     <transition name="slide">
-      <div v-if="selectedItem === 'Chat'">
-        <div class="card chatCard">
-          <div id="chat-room">
-            <div class="chatContainer">
-              <div class="listaUsuarios">
-                <ul>
-                  <a id="button-{{ usuario.email }}" @click="handleClick" v-for="usuario in usuarios">
-                    <li class="py-2 sideItem parrafo">
-                      {{ usuario }}
-                    </li>
-                  </a>
-                </ul>
-              </div>
+      <div v-if="selectedItem === 'Chat'" class="menuSlide">
+        <div class="card chatCard">         
+          <div class="chatContainer"> 
 
-              {% for room in chatRooms %}
-              <div class="chatBox p-3" id="chat-{{ room.id }}" style="display: none">
-                {% for mensaje in chatMessages %} {% if mensaje.idChatRoom.id == room.id %} {% if mensaje.idUser.id == user.id %}
-                <p class="parrafo message leMyself">
-                  {{ mensaje.message }}<br />{{ mensaje.timestamp.time }} {{ mensaje.idUser }}
-                </p>
-                {% else %}
-                <p class="parrafo message leOthers">
-                  {{ mensaje.message }}<br />{{ mensaje.timestamp.time }} {{ mensaje.idUser }}
-                </p>
-                {% endif %} {% endif %} {% endfor %}
-              </div>
-              {% endfor %}
+            <div class="listaUsuarios">
+              <ul>
+                <a>
+                  <li class="py-2 sideItem parrafo">
+                    Test user 1                    
+                  </li>
+
+                  <li class="py-2 sideItem parrafo">
+                    Test user 2                    
+                  </li>
+
+                  <li class="py-2 sideItem parrafo">
+                    Test user 3                    
+                  </li>
+                </a>
+              </ul>
             </div>
 
-            <div class="chatControls mt-5">
-              <input type="text" class="form-control parrafo" id="inputChat" placeholder="Escribe tu mensaje..."
-                name="inputChat" />
-              <button type="button" class="btn botonEnviar heading-6 ms-4" id="sendMessage">
-                Enviar
-              </button>
+            <div class="chatBox">
+                <p class="parrafo message leMyself">
+                  lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos 
+                </p>
+
+                <p class="parrafo message leMyself">
+                  lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos 
+                </p>
+
+                <p class="parrafo message leMyself">
+                  lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos 
+                </p>
+
+                <p class="parrafo message leMyself">
+                  lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos 
+                </p>
+
+                <p class="parrafo message leMyself">
+                  lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos 
+                </p>
+
+                <p class="parrafo message leOthers">
+                  lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos
+                </p>
+
+                <p class="parrafo message leOthers">
+                  lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos
+                </p>
+
+                <p class="parrafo message leOthers">
+                  lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos
+                </p>
+            </div>
+
+            <div class="chatControls">
+              <input type="text" class="form-control parrafo" id="inputChat" placeholder="Escribe tu mensaje..." name="inputChat"/>
             </div>
           </div>
         </div>
       </div>
     </transition>
 
+{% comment "" %}
+{% for room in chatRooms %}
+<div class="chatBox p-3" id="chat-{{ room.id }}" style="display: block">
+{% for mensaje in chatMessages %} {% if mensaje.idChatRoom.id == room.id %} {% if mensaje.idUser.id == user.id %}
+<p class="parrafo message leMyself">
+{{ mensaje.message }}<br />{{ mensaje.timestamp.time }} {{ mensaje.idUser }}
+</p>
+{% else %}
+<p class="parrafo message leOthers">
+{{ mensaje.message }}<br />{{ mensaje.timestamp.time }} {{ mensaje.idUser }}
+</p>
+{% endif %} {% endif %} {% endfor %}
+</div>
+{% endfor %}
+{% endcomment %}
+
     <transition name="slide">
-      <div v-if="selectedItem === 'Ingresa a tu clase'">
+      <div v-if="selectedItem === 'Ingresa a tu clase'" class="menuSlide">
         <div class="card">
           <h5 class="card-header heading-5">Clases</h5>
           <div class="card-body">
@@ -243,7 +291,7 @@
 
     {% if user.tipoUsuario.id == 2 %}
     <transition name="slide">
-      <div v-if="selectedItem === 'Buscar clases'">
+      <div v-if="selectedItem === 'Buscar clases'" class="menuSlide">
         <div class="card clasesCard">
           <div class="card-body">
             <h5 class="card-title heading-4 text-center">
@@ -287,7 +335,7 @@
     {% endif %}
 
     <transition name="slide">
-      <div v-if="selectedItem === 'Compra creditos!'">
+      <div v-if="selectedItem === 'Compra creditos!'" class="menuSlide">
         <div class="card">
           <h5 class="card-header heading-5">Creditos</h5>
           <div class="card-body">
@@ -300,14 +348,13 @@
               temporibus nihil sit itaque iusto dolore porro doloremque, beatae
               cumque, voluptates autem?
             </p>
-            <button id="get-email">Get Email</button>
           </div>
         </div>
       </div>
     </transition>
 
     <transition name="slide">
-      <div v-if="selectedItem === 'Perfil'">
+      <div v-if="selectedItem === 'Perfil'" class="menuSlide">
         <div class="card profileCard">
           <div class="card-body m-0 p-0">
             <img src="{% static '/img/bannerPink.png' %}" alt="" class="banner-img" />
@@ -389,7 +436,7 @@
 
     {% if user.tipoUsuario.id == 1 %}
     <transition name="slide">
-      <div v-if="selectedItem === 'Mi anuncio'">
+      <div v-if="selectedItem === 'Mi anuncio'" class="menuSlide">
         <div class="card anuncioCard">
           <div class="card-body">
             {% if user.anuncio == None %}
@@ -504,7 +551,7 @@
   </div>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 
 <script>
   var app = new Vue({
@@ -515,18 +562,9 @@
       {% else %}
       links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Mi anuncio', 'Compra creditos!'],
       {% endif %}
-      selectedItem: 'Chat'
+      selectedItem: 'Chat',
     },
   })
-</script>
-
-<script type="text/javascript">
-  let url = `ws://${window.location.host}/ws/socket-server`;
-  const chatSocket = new WebSocket(url);
-  chatSocket.onmessage = function(e){
-    let data = JSON.parse(e.data);
-    console.log('data: ', data);
-  }
 </script>
 
 <script src="{% static '/js/home.js' %}"></script>

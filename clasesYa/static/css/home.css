@@ -1,7 +1,6 @@
 .mainContainer {
     display: flex;
     height: 100vh;
-    overflow: hidden;
 }
 
 .leftContainer {
@@ -13,13 +12,7 @@
     height: 100vh;
 }
 
-.rightContainer {
-    width: 75%;
-    background-image: url('/static/img/linesBg.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    height: 100vh;
-}
+
 
 .customLogo {
     width: 30%;
@@ -140,6 +133,18 @@ ul {
     margin: 0 auto !important;
 }
 
+/* Estilos contenedor derecho y paneles del menu */
+.rightContainer {
+    width: 75%;
+    background-image: url('/static/img/linesBg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    box-sizing: border-box;
+}
+
 .selected {
     background-color: #d6d6d6 !important;
 }
@@ -147,26 +152,105 @@ ul {
 .slide-enter-active,
 .slide-leave-active {
     transition: all 0.5s ease;
+    position: absolute;
+    z-index: 1;
+    width: 75vw;
+    height: 100vh;
+    overflow-x: hidden;
 }
 
 .slide-enter,
 .slide-leave-to {
     transform: translateX(100%);
+    position: absolute;
+    z-index: 0;
+    width: 75vw;
+    height: 100vh;
+}
+
+.menuSlide {
+    width: 75vw;
+    height: 100vh;
+    padding: 4rem;
+}
+
+
+
+
+/* Estilos del chat */
+.chatCard {
+    height: -webkit-fill-available;
+    padding: 4rem;
+}
+
+.listaUsuarios {
+    width: 20%;
+}
+
+.botonEnviar {
+    width: 20%;
+    background-color: #fbdf54;
+    border-color: #fbdf54;
+    font-weight: normal;
+    color: #585759;
+}
+
+.chatContainer {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.chatBox {
+    display: flex;
+    width: 100%;
+    border: #D6D6D6 solid 1px;
+    border-radius: 1rem;
+    flex-direction: column;
+    padding: 2rem;
+    max-height: 80%;
+    overflow-y: auto;
+}
+
+.chatControls {
+    display: flex;
+}
+
+.message {
+    border-radius: 0.8rem;
+    line-height: 1.25;
+    max-width: 75%;
+    padding: 0.5rem .875rem;
+    position: relative;
+    word-wrap: break-word;
+}
+
+.leMyself {
+    align-items: flex-start;
+    background-color: #d6d6d6;
+    width: fit-content;
+
+}
+
+.leOthers {
+    align-self: flex-end;
+    background-color: #5281FA;
+    color: whitesmoke !important;
+    width: fit-content;
 }
 
 /* Estilos perfil */
 .profileCard {
-    position: relative;
-    margin-left: 5%;
-    margin-right: 5%;
-    margin-top: 10%;
-    margin-bottom: 10%;
-    border-radius: 1.5rem;
+    height: -webkit-fill-available;
+}
+
+.profileName:hover {
+    color: #fbdf54 !important;
 }
 
 .avatar-img {
     position: absolute;
-    top: 3%;
+    top: 2%;
     left: 15%;
     z-index: 2;
     width: 7rem;
@@ -174,7 +258,7 @@ ul {
 
 .banner-img {
     position: block;
-    top: 10;
+    top: 2%;
     width: 60%;
     height: 5rem;
     margin-left: 20%;
@@ -211,8 +295,6 @@ ul {
     border-bottom: 1px solid #d6d6d6;
 }
 
-/* Estilos perfil */
-
 .customTextArea {
     width: 100%;
     box-sizing: border-box;
@@ -230,21 +312,15 @@ textarea:focus {
     box-shadow: 0 0 0 0.2rem #FADE52;
 }
 
+/* Estilos menu anuncios */
 .anuncioCard {
-    margin-left: 5%;
-    margin-right: 5%;
-    margin-top: 5%;
-    margin-bottom: 5%;
-    border-radius: 1rem;
+    height: -webkit-fill-available;
+    padding: 4rem;
 }
 
+/* Estilos menu buscador de anuncios FALTA MODIFICAR CON LO DE JENNY*/
 .clasesCard {
-    margin-left: 4%;
-    margin-right: 4%;
-    margin-top: 4%;
-    margin-bottom: 4%;
-    border-radius: 1rem;
-    padding: 1rem;
+    height: -webkit-fill-available;
 }
 
 .anunciosCards {
@@ -258,38 +334,27 @@ textarea:focus {
     transition: all 0.1s ease-in-out;
 }
 
-.profileName:hover {
-    color: #fbdf54 !important;
-}
-
+/* Estilos menu calendario */
 .calendarioCard {
-    margin: 5%;
-    padding: 2%;
+    height: -webkit-fill-available;
+    padding: 2rem;
 }
 
 .calendarioTabla {
-    margin-top: 5%;
-    margin-bottom: 5%;
+    margin-bottom: 2rem;
 }
 
 table {
     width: 100%;
     table-layout: fixed;
-
 }
 
 td {
-
     height: 80px;
     text-align: center;
     vertical-align: middle;
     border: 1px solid #ccc;
 }
-
-.card {
-    border-radius: 20px;
-}
-
 
 .diaValido {
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -303,69 +368,7 @@ td {
     cursor: pointer;
 }
 
-.chatCard {
-    margin-left: 5%;
-    margin-right: 5%;
-    margin-top: 5%;
-    margin-bottom: 5%;
+/* estilos miscelaneos */
+.card {
     border-radius: 1rem;
-    padding: 2rem;
 }
-
-.chatControls {
-    display: flex;
-}
-
-.listaUsuarios {
-    width: 20%;
-}
-
-
-
-.botonEnviar {
-    width: 20%;
-    background-color: #fbdf54;
-    border-color: #fbdf54;
-    font-weight: normal;
-    color: #585759;
-}
-
-.chatContainer {
-    display: flex;
-    width: 100%;
-}
-
-.chatBox {
-    width: 100%;
-    border: #D6D6D6 solid 1px;
-    border-radius: 1rem;
-    margin-left: 1rem;
-    display: flex;
-    flex-direction: column;
-}
-
-
-.message {
-    border-radius: 0.8rem;
-    line-height: 1.25;
-    max-width: 75%;
-    padding: 0.5rem .875rem;
-    position: relative;
-    word-wrap: break-word;
-}
-
-.leMyself {
-    align-items: flex-start;
-    background-color: #d6d6d6;
-    width: fit-content;
-
-}
-
-.leOthers {
-    align-self: flex-end;
-    background-color: #5281FA;
-    color: whitesmoke !important;
-    width: fit-content;
-}
-
-
