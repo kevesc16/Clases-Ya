@@ -26,6 +26,7 @@ def home(request):
     #Carga del calendario
     cal, month, year, month_name = cargarCalendario()
 
+
     #Carga de usuarios y chats   
     if user.tipoUsuario.nombre == "Alumno":
         chatRooms = ChatRoom.objects.filter(idAlumno=user.id)
@@ -65,7 +66,7 @@ def home(request):
                     'chatMessages': chatMessages, 
                     'chatRooms': chatRooms,
                     'reservas': reservas,
-                    })            
+                    })
         else:
             return redirect('home', {
                 'user': user, 
@@ -99,8 +100,6 @@ def registro(request):
             return redirect('registro')
     else:
         return render(request, "registro.html")
-
-
 
 # Metodos loquisimos
 def registrarUsuario(request):

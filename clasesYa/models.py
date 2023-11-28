@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import UserManager, AbstractBaseUser, PermissionsMixin
 
+# Reemplamos el userManager por uno personalizado
 class CustomUserManager(UserManager):
     def _create_user(self, email, password, **extra_fields):
         if not email:
@@ -17,8 +18,8 @@ class CustomUserManager(UserManager):
     
     def create_superuser(self, email = None, password = None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-        return self._create_user(email, password, **extra_fields)    
+        extra_fields.setdefault('is_superuser', True)  
+        return self._create_user(email, password, **extra_fields)  
 
 class Campo(models.Model):
     nombre = models.CharField(max_length = 255, blank=True, default='')
@@ -54,6 +55,7 @@ class Rating(models.Model):
     comentario = models.CharField(max_length = 255, blank=True, default='')
     sesion = models.ForeignKey(Sesion, on_delete=models.CASCADE, default=1)
 
+# Nuevo modelo de usuario
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(blank = True, default='', unique=True)
     username = models.CharField(max_length = 255, blank=True, default='')
@@ -107,3 +109,4 @@ class ChatMessage(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return 'Usuario: ' + str(self.idUser) + ' | Mensaje: ' + str(self.message) + ' | Timestamp: ' + str(self.timestamp)
+  

@@ -13,3 +13,12 @@ function seleccionarDia(event) {
         }
     }
 };
+
+function scrollToBottom() {
+    var chatBox = document.querySelector('.chatBox');
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+window.onload = function() {
+    scrollToBottom();
+};

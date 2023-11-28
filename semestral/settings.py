@@ -20,8 +20,6 @@ INSTALLED_APPS = [
     'clasesYa',
 ]
 
-ASGI_APPLICATION = 'semestral.asgi.application'
-
 AUTH_USER_MODEL = 'clasesYa.User'
 
 MIDDLEWARE = [
@@ -54,6 +52,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'semestral.wsgi.application'
 
+ASGI_APPLICATION = 'semestral.asgi.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
+
+# Base de datos utilizada y configuración de la misma
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',

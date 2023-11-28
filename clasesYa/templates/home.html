@@ -193,82 +193,58 @@
       <div v-if="selectedItem === 'Chat'" class="menuSlide">
         <div class="card chatCard">         
           <div class="chatContainer"> 
+            <div class="listaChatBox">
+              <div class="listaUsuarios">
+                <ul>
+                  <a>
+                    {% if user.tipoUsuario.id == 2 %}
+                      {% for room in chatRooms %}
+                      <li class="py-2 sideItem parrafo" v-bind:key="{{ room.id }}" v-bind:class="{ 'selected' : {{ room.id }} === selectedRoom }" v-on:click="selectedRoom = {{ room.id }}" onclick="socketChange()" id="{{ room.id }}"> 
+                      {% if room.idProfesor.nombre != none %}
+                        {{ room.idProfesor.nombre }} {{ room.idProfesor.apellido }}                    
+                      {% else %}
+                        {{ room.idProfesor }}
+                      {% endif %}
+                      </li>
+                      {% endfor %}                                        
+                    {% else %}
+                      {% for room in chatRooms %}
+                      <li class="py-2 sideItem parrafo" v-bind:key="{{ room.id }}" v-bind:class="{ 'selected' : {{ room.id }} === selectedRoom }" v-on:click="selectedRoom = {{ room.id }}" onclick="socketChange()" id="{{ room.id }}"> 
+                      {% if room.idAlumno.nombre != none %}
+                        {{ room.idAlumno.nombre }} {{ room.idAlumno.apellido }}                    
+                      {% else %}
+                        {{ room.idAlumno }}
+                      {% endif %}
+                      </li>
+                      {% endfor %}
+                    {% endif %}
+                  </a>
+                </ul>
+              </div>
 
-            <div class="listaUsuarios">
-              <ul>
-                <a>
-                  <li class="py-2 sideItem parrafo">
-                    Test user 1                    
-                  </li>
-
-                  <li class="py-2 sideItem parrafo">
-                    Test user 2                    
-                  </li>
-
-                  <li class="py-2 sideItem parrafo">
-                    Test user 3                    
-                  </li>
-                </a>
-              </ul>
-            </div>
-
-            <div class="chatBox">
+              {% for room in chatRooms %}
+              <div class="chatBox" v-if="selectedRoom === {{ room.id }}">
+                {% for mensaje in chatMessages %} {% if mensaje.idChatRoom.id == room.id %} {% if mensaje.idUser.id == user.id %}
                 <p class="parrafo message leMyself">
-                  lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos 
+                  {{ mensaje.message }}<br/>{{ mensaje.timestamp.time }} {{ mensaje.idUser }}
                 </p>
-
-                <p class="parrafo message leMyself">
-                  lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos 
-                </p>
-
-                <p class="parrafo message leMyself">
-                  lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos 
-                </p>
-
-                <p class="parrafo message leMyself">
-                  lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos 
-                </p>
-
-                <p class="parrafo message leMyself">
-                  lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos 
-                </p>
-
+                {% else %}
                 <p class="parrafo message leOthers">
-                  lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos
+                  {{ mensaje.message }}<br/>{{ mensaje.timestamp.time }} {{ mensaje.idUser }}
                 </p>
-
-                <p class="parrafo message leOthers">
-                  lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos
-                </p>
-
-                <p class="parrafo message leOthers">
-                  lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos lorem ipsum dolor sit amet consectetur adipisicing elit. quos
-                </p>
+                {% endif %} {% endif %} {% endfor %}
+              </div>
+              {% endfor %}
             </div>
 
             <div class="chatControls">
-              <input type="text" class="form-control parrafo" id="inputChat" placeholder="Escribe tu mensaje..." name="inputChat"/>
+              <input type="text" class="form-control parrafo me-4" id="inputChat" placeholder="Escribe tu mensaje..." name="inputChat"/>
+              <button type="button" class="btn btn-lg botonCustom">Enviar</button>
             </div>
           </div>
         </div>
       </div>
     </transition>
-
-{% comment "" %}
-{% for room in chatRooms %}
-<div class="chatBox p-3" id="chat-{{ room.id }}" style="display: block">
-{% for mensaje in chatMessages %} {% if mensaje.idChatRoom.id == room.id %} {% if mensaje.idUser.id == user.id %}
-<p class="parrafo message leMyself">
-{{ mensaje.message }}<br />{{ mensaje.timestamp.time }} {{ mensaje.idUser }}
-</p>
-{% else %}
-<p class="parrafo message leOthers">
-{{ mensaje.message }}<br />{{ mensaje.timestamp.time }} {{ mensaje.idUser }}
-</p>
-{% endif %} {% endif %} {% endfor %}
-</div>
-{% endfor %}
-{% endcomment %}
 
     <transition name="slide">
       <div v-if="selectedItem === 'Ingresa a tu clase'" class="menuSlide">
@@ -552,19 +528,91 @@
 </div>
 
 
-
 <script>
   var app = new Vue({
     el: '#mainContainer',
     data: {
-      {% if user.tipoUsuario.id == 2 %}
-      links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Buscar clases', 'Compra creditos!'],
-      {% else %}
-      links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Mi anuncio', 'Compra creditos!'],
-      {% endif %}
+      {% if user.tipoUsuario.id == 2 %}links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Buscar clases', 'Compra creditos!'],
+      {% else %}links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Mi anuncio', 'Compra creditos!'],{% endif %}
       selectedItem: 'Chat',
+      rooms: [{% for room in chatRooms %}{{ room.id }}, {% endfor %}],
+      selectedRoom: {{ chatRooms.0.id }},
     },
   })
+</script>
+
+<script>
+
+roomId = {{ chatRooms.0.id }};
+
+var socket = new WebSocket('ws://' + window.location.host + '/ws/' + 1 + '/');
+
+function socketChange() {
+  roomId = event.target.id;
+  socket = new WebSocket('ws://' + window.location.host + '/ws/' + roomId + '/');
+}
+
+
+socket.onopen = function(e) {
+  console.log('WebSocket connection opened');
+};
+
+socket.onclose = function(e) {
+  console.log('WebSocket connection closed');
+};
+
+socket.onmessage = function(e) {
+  var data = JSON.parse(e.data);
+  var message = data['message'];
+  var user = data['username'];
+
+  var currentTime = new Date();
+  var hours = currentTime.getHours();
+  var minutes = currentTime.getMinutes();
+  var period = hours >= 12 ? 'p.m.' : 'a.m.';
+
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? '0'+minutes : minutes;
+
+  var formattedTime = hours + ":" + minutes + " " + period;
+
+  if ( user == '{{ user.email }}' ) {
+    var chatLog = document.querySelector('.chatBox');
+    var newMessage = document.createElement('p');
+    newMessage.innerHTML = message + "<br/>" + formattedTime +' {{ user.email }}';
+    newMessage.classList.add('parrafo');
+    newMessage.classList.add('message');
+    newMessage.classList.add('leMyself');
+    chatLog.appendChild(newMessage);
+  } else {
+    var chatLog = document.querySelector('.chatBox');
+    var newMessage = document.createElement('p');
+    newMessage.innerHTML = message + "<br/>" + formattedTime + ' ' + user;
+    newMessage.classList.add('parrafo');
+    newMessage.classList.add('message');
+    newMessage.classList.add('leOthers');
+    chatLog.appendChild(newMessage);
+  }
+};
+
+var sendButton = document.querySelector('.botonCustom');
+var messageInput = document.querySelector('#inputChat');
+
+sendButton.addEventListener('click', function(e) {
+  e.preventDefault();
+
+  var message = messageInput.value;
+
+  var user = '{{ user.email }}';
+
+  socket.send(JSON.stringify({
+    'username': user,
+    'message': message
+  }));
+
+  messageInput.value = '';
+});
 </script>
 
 <script src="{% static '/js/home.js' %}"></script>
