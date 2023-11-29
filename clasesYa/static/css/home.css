@@ -12,8 +12,6 @@
     height: 100vh;
 }
 
-
-
 .customLogo {
     width: 30%;
 }
@@ -174,8 +172,41 @@ ul {
     padding: 4rem;
 }
 
+/* Estilos videollamada card */
+.videoCard {
+    height: -webkit-fill-available;
+    padding: 4rem;
+}
 
+.conClase {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
+.botonClase {
+    background: linear-gradient(to right, #FADE52, #FACA52);
+    border-color: #FADE52;
+    color: #201F22;
+    height: 10rem;
+    width: 20rem;
+    border-radius: 4rem;
+}
+
+.botonEntrar {
+    background: linear-gradient(to right, #FADE52, #FACA52);
+    border-color: #FADE52;
+    color: #201F22;
+    height: 8rem;
+    width: 16rem;
+    border-radius: 4rem;
+}
+.customEntrar {
+    display: flex;
+    flex-direction: column;
+    width: 30rem;
+}
 
 /* Estilos del chat */
 .chatCard {
@@ -208,7 +239,7 @@ ul {
 }
 
 .chatBox {
-    display: flex;
+    display: none;
     width: 100%;
     border: #D6D6D6 solid 1px;
     border-radius: 1rem;
@@ -217,6 +248,7 @@ ul {
     max-height: 90%;
     overflow-y: auto;
 }
+
 
 .chatControls {
     display: flex;
@@ -322,16 +354,20 @@ textarea:focus {
 .anuncioCard {
     height: -webkit-fill-available;
     padding: 4rem;
+    
 }
 
 /* Estilos menu buscador de anuncios FALTA MODIFICAR CON LO DE JENNY*/
 .clasesCard {
     height: -webkit-fill-available;
+    overflow-y: auto;
+    padding: 4rem;
 }
 
 .anunciosCards {
-    border-radius: 1rem;
+    border-radius: 3rem;
     transition: all 0.1s ease-in-out;
+    background-color: #EFE8A9;
 }
 
 .anunciosCards:hover {
@@ -378,3 +414,73 @@ td {
 .card {
     border-radius: 1rem;
 }
+
+.modalCustom {
+    display: none;
+    position: fixed;
+    width: 100%;    
+    height: 100%;
+}
+
+.modalCustom {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #FAF2DD;
+    padding: 300px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 80%;    
+    height: 80%;
+}
+
+.botonCustomCerrar {
+    background-color: #FA5E52;
+    border-color: #FA5E52;
+    font-weight: normal;
+    color: #585759;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+}
+
+.botonCustomCerrar:hover {
+    background-color: #BA716C;
+    border-color: #BA716C;
+    color: whitesmoke;
+}
+
+.solicitudCard {
+    height: -webkit-fill-available;
+    overflow-y: auto;
+    padding: 4rem;
+}
+
+.reservaCardAprobada {
+    border-radius: 3rem;
+    transition: all 0.1s ease-in-out;
+    background-color: #5281FA;
+}
+
+.reservaCardAprobada:hover {
+    box-shadow: 0 0 5px rgba(33, 33, 33, .2);
+    transform: scale(1.05);
+    transition: all 0.1s ease-in-out;
+}
+
+.reservaCard {
+    padding: 2rem;
+}
+
+.reservaCardPendiente {
+    border-radius: 3rem;
+    transition: all 0.1s ease-in-out;
+    background-color: #fbdf54;
+}
+
+.reservaCardPendiente:hover {
+    box-shadow: 0 0 5px rgba(33, 33, 33, .2);
+    transform: scale(1.05);
+    transition: all 0.1s ease-in-out;
+}
+

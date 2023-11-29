@@ -23,7 +23,7 @@
     <div class="menuContainer">
       <ul>
         {% verbatim %}
-        <a href="#" v-for="link in links" v-on:click="selectedItem = link">
+        <a href="#" v-for="link in links" v-on:click="selectedItem = link; selectedRoom = null">
           <li class="py-2 sideItem parrafo" v-bind:class="{ 'selected': selectedItem === link }">
             {{ link }}
           </li>
@@ -34,7 +34,7 @@
     <img src="{% static '/img/laying.png' %}" alt="" class="layingImg" />
     <div class="profileContainer">
       <img src="{% static '/img/girl3.png' %}" class="avatar" />
-      {% if user.nombre != None %}
+      {% if user.nombre == None %}
       <a href="#" v-on:click.prevent="selectedItem = 'Perfil'" class="nameLink">
         <span class="profileName parrafo">{{ user.email }}</span>
       </a>
@@ -136,19 +136,9 @@
                   {% if day == 0 %}
                   <td></td>
                   {% else %}
-                  <td
-                    class="parrafo
-                    {% for reserva in reservas %}
-                    {% if day == reserva.fecha.day and month == reserva.fecha.month and year == reserva.fecha.year %}
-                    diaValido 
-                    {% endif %} 
-                    {% endfor %}"                    
-                    {% for reserva in reservas %}
-                    {% if day == reserva.fecha.day and month == reserva.fecha.month and year == reserva.fecha.year %}
-                    data-bs-toggle="modal" data-bs-target="#diaModal" 
-                    onclick="seleccionarDia(event)"
-                    {% endif %} 
-                    {% endfor %}>{{ day }}</td>
+                  <td class="parrafo {% for reserva in reservas %}{% if day == reserva.fecha.day and month == reserva.fecha.month and year == reserva.fecha.year %}diaValido {% endif %}{% endfor %}"{% for reserva in reservas %}{% if day == reserva.fecha.day and month == reserva.fecha.month and year == reserva.fecha.year %}data-bs-toggle="modal" data-bs-target="#diaModal" onclick="seleccionarDia(event)"{% endif %}{% endfor %}>
+                  {{ day }}
+                  </td>
                   {% endif %} 
                   {% endfor %}
                 </tr>
@@ -172,7 +162,11 @@
                   <div class="modal-body" id="allReservas">
                     {% for reserva in reservas %}
                     <p class="parrafo {{ reserva.fecha.day }}">
-                      {{ monthName }} {{ reserva.fecha.day }} a las {{ reserva.hora }} con {{ reserva.idAlumno }}
+                      {{ monthName }} {{ reserva.fecha.day }} a las {{ reserva.hora }} con {% if user.tipoUsuario.id == 1 %} {{ reserva.idAlumno.email}} {% else %} {{ reserva.idProfesor.email }} {% endif %}
+                      {% if reserva.estado == 1 %}
+                      
+                      {% else %}
+                      {% endif %}
                     </p>
                     {% endfor %}
                   </div>
@@ -223,23 +217,14 @@
               </div>
 
               {% for room in chatRooms %}
-              <div class="chatBox" v-if="selectedRoom === {{ room.id }}">
-                {% for mensaje in chatMessages %} {% if mensaje.idChatRoom.id == room.id %} {% if mensaje.idUser.id == user.id %}
-                <p class="parrafo message leMyself">
-                  {{ mensaje.message }}<br/>{{ mensaje.timestamp.time }} {{ mensaje.idUser }}
-                </p>
-                {% else %}
-                <p class="parrafo message leOthers">
-                  {{ mensaje.message }}<br/>{{ mensaje.timestamp.time }} {{ mensaje.idUser }}
-                </p>
-                {% endif %} {% endif %} {% endfor %}
-              </div>
+                <div class="chatBox" v-if="selectedRoom === {{ room.id }}" id="room{{ room.id }}">
+                </div>
               {% endfor %}
             </div>
 
             <div class="chatControls">
               <input type="text" class="form-control parrafo me-4" id="inputChat" placeholder="Escribe tu mensaje..." name="inputChat"/>
-              <button type="button" class="btn btn-lg botonCustom">Enviar</button>
+              <button type="button" class="btn btn-lg botonCustom" onclick="enviarMensaje()">Enviar</button>
             </div>
           </div>
         </div>
@@ -248,19 +233,30 @@
 
     <transition name="slide">
       <div v-if="selectedItem === 'Ingresa a tu clase'" class="menuSlide">
-        <div class="card">
-          <h5 class="card-header heading-5">Clases</h5>
-          <div class="card-body">
-            <h5 class="card-title heading-5" style="font-weight: normal">
-              Special title treatment
-            </h5>
-            <p class="card-text parrafo">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa est
-              recusandae molestiae aut, maiores repellat ut tempora dolorum
-              temporibus nihil sit itaque iusto dolore porro doloremque, beatae
-              cumque, voluptates autem?
-            </p>
+        <div class="card videoCard">
+          {% if user.tipoUsuario.id == 1 %}
+          <div class="card-body conClase">
+            <h1 class="heading-3 mb-5"> ¿Estas listo para iniciar tu clase? </h1>
+            <a href="{% url 'videollamada' %}">
+              <button type="button" class="btn botonClase heading-1">
+                Crea tu sala
+              </button>
+            </a>
+          </div>          
+          {% else %}
+          <div class="card-body conClase">
+            <h1 class="heading-3 mb-5"> ¿Estas listo para entrar a tu clase? </h1>
+
+            <form method="POST" class="conClase">
+              {% csrf_token %}
+              <input type="text" class="form-control parrafo customEntrar" id="inputUrl" placeholder="Ingresa el codigo de tu sala" name="inputUrl"/>              
+              <button type="submit" class="btn botonEntrar heading-1 mt-5" name="entrarVideo">
+                ingresar a la sala
+              </button>
+            </form>
+
           </div>
+          {% endif %}         
         </div>
       </div>
     </transition>
@@ -281,29 +277,158 @@
             </h5>
             <div class="row">
               {% for anuncio in anuncios %}
-              <div class="col-4">
-                <a href="#">
-                  <div class="card anunciosCards">
-                    <div class="card-body">
-                      <h4 class="heading-4 text-center">
-                        {{ anuncio.titulo }}
-                      </h4>
-                      <h5 class="heading-5 text-center">
-                        {{ anuncio.subTitulo }}
-                      </h5>
-                      <p class="parrafo text-center">
-                        {{ anuncio.descripcion }}
-                      </p>
-                      <p class="parrafo text-center">$ {{ anuncio.precio }}</p>
-                      <p class="parrafo text-center">
-                        {{ anuncio.campo.nombre }}
-                      </p>
-                    </div>
+              <div class="col-4 equal-card mb-1">
+                <div class="card anunciosCards equal-card " onclick="mostrarDetalles('{{ anuncio.id }}','{{ anuncio.titulo }}','{{ anuncio.subTitulo }}', '{{anuncio.descripcion}}', '{{anuncio.precio}}', '{{anuncio.campo.nombre}}')">
+                  <div class="card-body text-center">
+                      <a href="#" >
+                        <h4 class="heading-4 text-center">{{ anuncio.titulo }}</h4>
+                        <h5 class="heading-5 text-center"> {{ anuncio.subTitulo }}</h5>
+                        <p class="parrafo text-center">{{ anuncio.descripcion }}</p>
+                        <p class="parrafo text-center">$ {{ anuncio.precio }}</p>
+                        <p class="parrafo text-center">{{ anuncio.campo.nombre }}</p>
+                      </a>
                   </div>
-                </a>
+                </div>
               </div>
               {% endfor %}
             </div>
+          </div>
+        </div>
+      </div>
+    </transition>
+    <div id="modalAnuncio" class="modal modalCustom">
+      <div class="modal-content contentCustom">
+        <span class="botonCustomCerrar" id="cerrarModal" onclick="cerrarModal()" type="button">Volver</span>
+        </span>
+          <div id="detalleAnuncio">
+            <form method="POST" action="{% url 'home' %}" id="reservarClase">
+            {% csrf_token %}
+              <h1 id="modalTitulo" class="heading-3"></h1>
+              <h5 id="modalsubTitulo" class="heading-4"></h5>
+              <p id="modalDescripcion" class="parrafo"></p>
+              <p id="modalPrecio" class="parrafo"></p>
+              <p id="modalCampo.nombre" class="parrafo"></p>
+              <input type="hidden" name="anuncio" id="anuncio">
+              <input type="hidden" name="idAlumno" id="idAlumno" value="{{ user.id }}">
+              <button id="reservarBtn" type="submit" name="reservarClase" class="btn btn-lg botonCustom heading-6">Solicitar reserva</button>
+            </form>
+          </div>
+      </div>
+    </div> 
+    {% endif %}
+
+
+    {% if user.tipoUsuario.id == 1 %}
+    <transition name="slide">
+      <div v-if="selectedItem === 'Mi anuncio'" class="menuSlide">
+        <div class="card anuncioCard">
+          <div class="card-body">
+            {% if user.anuncio == None %}
+            <h1 class="heading-5 text-center mb-5">
+              Empieza a crear tu anuncio para que los alumnos te encuentren!
+            </h1>
+            <form method="POST" action="{% url 'home' %}" id="anuncioForm">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-6">
+                  <div class="customInput mb-4">
+                    <label for="inputTitulo" class="form-label parrafo">Titulo</label>
+                    <input type="text" class="form-control parrafo" id="inputTitulo" placeholder="Ingresa un titulo"
+                      name="inputTitulo" />
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="customInput mb-4">
+                    <label for="inputSubTitulo" class="form-label parrafo">Sub-titulo</label>
+                    <input type="text" class="form-control parrafo" id="inputSubTitulo"
+                      placeholder="Ingresa un sub-titulo" name="inputSubTitulo" />
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="customInput mb-4">
+                    <label for="inputCampo" class="form-label parrafo">Campo</label>
+                    <input type="text" class="form-control parrafo" id="inputCampo"
+                      placeholder="Ingresa la materia que enseñas" name="inputCampo" />
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="customInput mb-4">
+                    <label for="inputPrecio" class="form-label parrafo">Precio</label>
+                    <input type="text" class="form-control parrafo" id="inputPrecio"
+                      placeholder="Ingresa un precio para tus clases" name="inputPrecio" />
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="customInput mb-4">
+                    <label for="inputPrecio" class="form-label parrafo text-center"
+                      style="width: 100%">Descripcion</label>
+                    <textarea class="customTextArea" name="inputDescripcion" id="inputDescripcion" rows="10"
+                      placeholder="Ingresa una descripcion para tu anuncio"></textarea>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="customInput mb-4 text-center">
+                    <button type="submit" name="anuncioForm" value="anuncioForm" class="btn botonCustom heading-6">
+                      Crear Anuncio
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+            {% else %}
+            <h1 class="heading-5 text-center mb-5">Modifica tu anuncio</h1>
+              <form method="POST" id="updateAnuncio">
+              {% csrf_token %}
+              <div class="row">
+
+                  <div class="col-6">
+                    <div class="customInput mb-4">
+                      <label for="inputTitulo" class="form-label parrafo">Titulo</label>
+                      <input type="text" class="form-control parrafo" id="inputTitulo"
+                        placeholder="{{ user.anuncio.titulo }}" name="inputTitulo" />
+                    </div>
+                  </div>
+
+                  <div class="col-6">
+                    <div class="customInput mb-4">
+                      <label for="inputSubTitulo" class="form-label parrafo">Sub-titulo</label>
+                      <input type="text" class="form-control parrafo" id="inputSubTitulo"
+                        placeholder="{{ user.anuncio.subTitulo }}" name="inputSubTitulo" />
+                    </div>
+                  </div>
+
+                  <div class="col-6">
+                    <div class="customInput mb-4">
+                      <label for="inputCampo" class="form-label parrafo">Campo</label>
+                      <input type="text" class="form-control parrafo" id="inputCampo"
+                        placeholder="{{ user.anuncio.campo.nombre }}" name="inputCampo" />
+                    </div>
+                  </div>
+
+                  <div class="col-6">
+                    <div class="customInput mb-4">
+                      <label for="inputPrecio" class="form-label parrafo">Precio</label>
+                      <input type="text" class="form-control parrafo" id="inputPrecio"
+                        placeholder="{{ user.anuncio.precio }}" name="inputPrecio" />
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <div class="customInput mb-4">
+                      <label for="inputPrecio" class="form-label parrafo text-center"
+                        style="width: 100%">Descripcion</label>
+                      <textarea class="customTextArea" name="inputDescripcion" id="inputDescripcion" rows="10"
+                        placeholder="{{ user.anuncio.descripcion }}"></textarea>
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <button type="submit" name="updateAnuncio" value="{{ user.anuncio.id }}" class="btn botonCustom heading-6">Confirmar cambios</button>
+                  </div>
+              </div>
+            </form>
+
+            {% endif %}
           </div>
         </div>
       </div>
@@ -412,113 +537,37 @@
 
     {% if user.tipoUsuario.id == 1 %}
     <transition name="slide">
-      <div v-if="selectedItem === 'Mi anuncio'" class="menuSlide">
-        <div class="card anuncioCard">
+      <div v-if="selectedItem === 'Solicitudes'" class="menuSlide">
+        <div class="card solicitudCard">
           <div class="card-body">
-            {% if user.anuncio == None %}
-            <h1 class="heading-5 text-center mb-5">
-              Empieza a crear tu anuncio para que los alumnos te encuentren!
-            </h1>
-            <form method="POST" action="{% url 'home' %}" id="anuncioForm">
-              {% csrf_token %}
-              <div class="row">
-                <div class="col-6">
-                  <div class="customInput mb-4">
-                    <label for="inputTitulo" class="form-label parrafo">Titulo</label>
-                    <input type="text" class="form-control parrafo" id="inputTitulo" placeholder="Ingresa un titulo"
-                      name="inputTitulo" />
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="customInput mb-4">
-                    <label for="inputSubTitulo" class="form-label parrafo">Sub-titulo</label>
-                    <input type="text" class="form-control parrafo" id="inputSubTitulo"
-                      placeholder="Ingresa un sub-titulo" name="inputSubTitulo" />
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="customInput mb-4">
-                    <label for="inputCampo" class="form-label parrafo">Campo</label>
-                    <input type="text" class="form-control parrafo" id="inputCampo"
-                      placeholder="Ingresa la materia que enseñas" name="inputCampo" />
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="customInput mb-4">
-                    <label for="inputPrecio" class="form-label parrafo">Precio</label>
-                    <input type="text" class="form-control parrafo" id="inputPrecio"
-                      placeholder="Ingresa un precio para tus clases" name="inputPrecio" />
-                  </div>
-                </div>
-                <div class="col-12">
-                  <div class="customInput mb-4">
-                    <label for="inputPrecio" class="form-label parrafo text-center"
-                      style="width: 100%">Descripcion</label>
-                    <textarea class="customTextArea" name="inputDescripcion" id="inputDescripcion" rows="10"
-                      placeholder="Ingresa una descripcion para tu anuncio"></textarea>
-                  </div>
-                </div>
-                <div class="col-12">
-                  <div class="customInput mb-4 text-center">
-                    <button type="submit" name="anuncioForm" value="anuncioForm" class="btn botonCustom heading-6">
-                      Crear Anuncio
-                    </button>
+            <div class="row">
+            <h1 class="heading-3 text-center mb-5">Tus alumnos! OwO</h1>
+            {% for reserva in reservas %}            
+              {% if reserva.estado == 'Aprobada' %}
+              <div class="col-4 equal-card mb-4">
+                <div class="card reservaCardAprobada equal-card">
+                  <div class="card-body text-center reservaCard">
+                    <h1 class="headingWhite-5 text-center">Clase agendada</h1>
+                    <p class="parrafoWhite text-center"> {% if reserva.idAlumno.nombre != none %} {{ reserva.idAlumno.nombre }} {{ reserva.idAlumno.apellido }} {% else %} {{ reserva.idAlumno }} {% endif %} </p>
+                    <p class="parrafoWhite text-center"> {% if reserva.fecha == none %} Debes asignar una fecha {% else %} {{ reserva.fecha }} {% endif %} </p>
+                    <p class="parrafoWhite text-center"> {% if reserva.hora == none %} Debes asignar una hora {% else %} {{ reserva.hora }} {% endif %} </p>
                   </div>
                 </div>
               </div>
-            </form>
-            {% else %}
-            <h1 class="heading-5 text-center mb-5">Modifica tu anuncio</h1>
-            <form method="POST">
-              {% csrf_token %}
-              <div class="row">
-                <div class="col-6">
-                  <div class="customInput mb-4">
-                    <label for="inputTitulo" class="form-label parrafo">Titulo</label>
-                    <input type="text" class="form-control parrafo" id="inputTitulo"
-                      placeholder="{{ user.anuncio.titulo }}" name="inputTitulo" />
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="customInput mb-4">
-                    <label for="inputSubTitulo" class="form-label parrafo">Sub-titulo</label>
-                    <input type="text" class="form-control parrafo" id="inputSubTitulo"
-                      placeholder="{{ user.anuncio.subTitulo }}" name="inputSubTitulo" />
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="customInput mb-4">
-                    <label for="inputCampo" class="form-label parrafo">Campo</label>
-                    <input type="text" class="form-control parrafo" id="inputCampo"
-                      placeholder="{{ user.anuncio.campo.nombre }}" name="inputCampo" />
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="customInput mb-4">
-                    <label for="inputPrecio" class="form-label parrafo">Precio</label>
-                    <input type="text" class="form-control parrafo" id="inputPrecio"
-                      placeholder="{{ user.anuncio.precio }}" name="inputPrecio" />
-                  </div>
-                </div>
-                <div class="col-12">
-                  <div class="customInput mb-4">
-                    <label for="inputPrecio" class="form-label parrafo text-center"
-                      style="width: 100%">Descripcion</label>
-                    <textarea class="customTextArea" name="inputDescripcion" id="inputDescripcion" rows="10"
-                      placeholder="{{ user.anuncio.descripcion }}"></textarea>
-                  </div>
-                </div>
-                <div class="col-12">
-                  <div class="customInput mb-4 text-center">
-                    <button type="submit" name="anuncioForm" value="anuncioUpdateForm"
-                      class="btn botonCustom heading-6">
-                      Confirmar cambios
-                    </button>
+              {% else %}
+              <div class="col-4 equal-card mb-4">
+                <div class="card reservaCardPendiente equal-card">
+                  <div class="card-body text-center reservaCard">
+                    <h1 class="heading-5 text-center">Solicitud de reserva</h1>
+                    <p class="parrafo text-center"> {% if reserva.idAlumno.nombre != none %} {{ reserva.idAlumno.nombre }} {{ reserva.idAlumno.apellido }} {% else %} {{ reserva.idAlumno }} {% endif %} </p>
+                    <p class="parrafo text-center"> {% if reserva.fecha == none %} Debes asignar una fecha {% else %} {{ reserva.fecha }} {% endif %} </p>
+                    <p class="parrafo text-center"> {% if reserva.hora == none %} Debes asignar una hora {% else %} {{ reserva.hora }} {% endif %} </p>
                   </div>
                 </div>
               </div>
-            </form>
-            {% endif %}
+              {% endif %}
+            {% endfor %}
+            </div>
           </div>
         </div>
       </div>
@@ -532,87 +581,186 @@
   var app = new Vue({
     el: '#mainContainer',
     data: {
-      {% if user.tipoUsuario.id == 2 %}links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Buscar clases', 'Compra creditos!'],
-      {% else %}links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Mi anuncio', 'Compra creditos!'],{% endif %}
-      selectedItem: 'Chat',
+      {% if user.tipoUsuario.id == 2 %}links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Buscar clases'],
+      {% else %}links: ['Inicio', 'Calendario', 'Chat', 'Ingresa a tu clase', 'Mi anuncio', 'Solicitudes'],{% endif %}
+      selectedItem: 'Buscar clases',
       rooms: [{% for room in chatRooms %}{{ room.id }}, {% endfor %}],
-      selectedRoom: {{ chatRooms.0.id }},
-    },
+      selectedRoom: null,
+    },   
   })
-</script>
 
-<script>
+  roomId = {{ chatRooms.0.id }};
+  var socket = new WebSocket('ws://' + window.location.host + '/ws/' + roomId + '/');
 
-roomId = {{ chatRooms.0.id }};
+  socket.onopen = function(e) {
+    var chatLogs = document.querySelectorAll('.chatBox');
+    chatLogs.forEach(chatLog => {
+      chatLog.scrollTop = chatLog.scrollHeight;
+    });
+    console.log('WebSocket connection opened');
+  };
 
-var socket = new WebSocket('ws://' + window.location.host + '/ws/' + 1 + '/');
+  socket.onclose = function(e) {
+    var chatLogs = document.querySelectorAll('.chatBox');
+    chatLogs.forEach(chatLog => {
+      chatLog.innerHTML = '';
+    });
+    console.log('WebSocket connection closed');
+  };
 
-function socketChange() {
-  roomId = event.target.id;
-  socket = new WebSocket('ws://' + window.location.host + '/ws/' + roomId + '/');
-}
+  socket.onmessage = function(e) {
+    var data = JSON.parse(e.data);
+    var message = data['message'];
+    var user = data['username'];
 
+    var currentTime = new Date();
+    var hours = currentTime.getHours();
+    var minutes = currentTime.getMinutes();
 
-socket.onopen = function(e) {
-  console.log('WebSocket connection opened');
-};
+    hours = hours < 10 ? '0' + hours : hours;
+    minutes = minutes < 10 ? '0' + minutes : minutes; 
 
-socket.onclose = function(e) {
-  console.log('WebSocket connection closed');
-};
+    var formattedTime = hours + ":" + minutes;
 
-socket.onmessage = function(e) {
-  var data = JSON.parse(e.data);
-  var message = data['message'];
-  var user = data['username'];
+    if ( user == '{{ user.email }}' ) {
+      var chatLog = document.querySelector('#room' + roomId);
+      var newMessage = document.createElement('p');
+      newMessage.innerHTML = message + "<br/>" + formattedTime +' {{ user.email }}';
+      newMessage.classList.add('parrafo');
+      newMessage.classList.add('message');
+      newMessage.classList.add('leMyself');
+      chatLog.appendChild(newMessage);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    } else {
+      var chatLog = document.querySelector('#room' + roomId);
+      var newMessage = document.createElement('p');
+      newMessage.innerHTML = message + "<br/>" + formattedTime + ' ' + user;
+      newMessage.classList.add('parrafo');
+      newMessage.classList.add('message');
+      newMessage.classList.add('leOthers');
+      chatLog.appendChild(newMessage);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+  };
 
-  var currentTime = new Date();
-  var hours = currentTime.getHours();
-  var minutes = currentTime.getMinutes();
-  var period = hours >= 12 ? 'p.m.' : 'a.m.';
+  function socketChange() {
+    socket.close();
+    roomId = event.target.id;
+    socket = new WebSocket('ws://' + window.location.host + '/ws/' + roomId + '/');
 
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
-  minutes = minutes < 10 ? '0'+minutes : minutes;
+    socket.onopen = function(e) {
+      var chatLogs = document.querySelectorAll('.chatBox');
+      chatLogs.forEach(chatLog => {
+        chatLog.scrollTop = chatLog.scrollHeight;
+      });
+      console.log('WebSocket connection opened');
+    };
 
-  var formattedTime = hours + ":" + minutes + " " + period;
+    socket.onclose = function(e) {
+      console.log('WebSocket connection closed');
+      var chatLogs = document.querySelectorAll('.chatBox');
+      chatLogs.forEach(chatLog => {
+        chatLog.innerHTML = '';
+      });
+    };
 
-  if ( user == '{{ user.email }}' ) {
-    var chatLog = document.querySelector('.chatBox');
-    var newMessage = document.createElement('p');
-    newMessage.innerHTML = message + "<br/>" + formattedTime +' {{ user.email }}';
-    newMessage.classList.add('parrafo');
-    newMessage.classList.add('message');
-    newMessage.classList.add('leMyself');
-    chatLog.appendChild(newMessage);
-  } else {
-    var chatLog = document.querySelector('.chatBox');
-    var newMessage = document.createElement('p');
-    newMessage.innerHTML = message + "<br/>" + formattedTime + ' ' + user;
-    newMessage.classList.add('parrafo');
-    newMessage.classList.add('message');
-    newMessage.classList.add('leOthers');
-    chatLog.appendChild(newMessage);
+    socket.onmessage = function(e) {
+      var data = JSON.parse(e.data);
+      var message = data['message'];
+      var user = data['username'];
+
+      var currentTime = new Date();
+      var hours = currentTime.getHours();
+      var minutes = currentTime.getMinutes();
+
+      hours = hours < 10 ? '0' + hours : hours;
+      minutes = minutes < 10 ? '0' + minutes : minutes; 
+
+      var formattedTime = hours + ":" + minutes;
+
+      if ( user == '{{ user.email }}' ) {
+        var chatLog = document.querySelector('#room' + roomId);
+        var newMessage = document.createElement('p');
+        newMessage.innerHTML = message + "<br/>" + formattedTime +' {{ user.email }}';
+        newMessage.classList.add('parrafo');
+        newMessage.classList.add('message');
+        newMessage.classList.add('leMyself');
+        chatLog.appendChild(newMessage);
+        chatLog.scrollTop = chatLog.scrollHeight;
+      } else {
+        var chatLog = document.querySelector('#room' + roomId);
+        var newMessage = document.createElement('p');
+        newMessage.innerHTML = message + "<br/>" + formattedTime + ' ' + user;
+        newMessage.classList.add('parrafo');
+        newMessage.classList.add('message');
+        newMessage.classList.add('leOthers');
+        chatLog.appendChild(newMessage);
+        chatLog.scrollTop = chatLog.scrollHeight;
+      }
+    };
+    
+    setTimeout(function() {
+      var chatLog = document.querySelector('#room' + roomId);
+      chatLog.innerHTML = '';
+      fetch('/get_messages/' + roomId + '/')
+      .then(response => response.json())
+      .then(messages => {
+        messages.forEach(msg => {
+          var newMessage = document.createElement('p');
+          newMessage.innerHTML = `${msg.message} <br/> ${msg.timestamp} ${msg.idUser}`;
+          newMessage.classList.add('parrafo');
+          newMessage.classList.add('message');
+          newMessage.classList.add(msg.idUser === '{{ user.email }}' ? 'leMyself' : 'leOthers');
+          chatLog.appendChild(newMessage);
+        });
+        chatLog.style.display = 'flex';
+        chatLog.scrollTop = chatLog.scrollHeight;
+      });
+      document.getElementById('inputChat').addEventListener('keyup', function(event) {
+        if (event.keyCode === 13) {
+          event.preventDefault();
+          enviarMensaje();
+        }
+      });
+    }, 500);
   }
-};
 
-var sendButton = document.querySelector('.botonCustom');
-var messageInput = document.querySelector('#inputChat');
+  function enviarMensaje() {    
+    var messageInput = document.querySelector('#inputChat');
+    var message = messageInput.value;
+    var user = '{{ user.email }}';    
+    socket.send(JSON.stringify({
+      'username': user,
+      'message': message
+    }));
+    messageInput.value = '';
+  }
 
-sendButton.addEventListener('click', function(e) {
-  e.preventDefault();
+  function mostrarDetalles(id, titulo, subTitulo, descripcion, precio, campo) {
 
-  var message = messageInput.value;
+      document.getElementById("inputAvatar")
+      document.getElementById("modalTitulo").innerText = titulo;
+      document.getElementById("modalsubTitulo").innerText = subTitulo;
+      document.getElementById("modalDescripcion").innerText = descripcion;
+      document.getElementById("modalPrecio").innerText = "Precio: $" + precio;
+      document.getElementById("modalCampo.nombre").innerText = "Campo: " + campo;
+      document.getElementById("reservarBtn").onclick = () => {goToClass(id)};
+      
+      document.getElementById("anuncio").value = id;
 
-  var user = '{{ user.email }}';
+      var modal = document.getElementById("modalAnuncio");
+      modal.style.display = "block";
+  }
 
-  socket.send(JSON.stringify({
-    'username': user,
-    'message': message
-  }));
+  function goToClass(id){
+      window.location.assign("/reservar_clase/" + id);
+  }
 
-  messageInput.value = '';
-});
+  function cerrarModal() {
+
+      var modal = document.getElementById("modalAnuncio");
+      modal.style.display = "none";
+  }
 </script>
 
 <script src="{% static '/js/home.js' %}"></script>

@@ -11,4 +11,6 @@ urlpatterns = [
     path("home/", views.home, name='home'),
     path("registro/", views.registro, name='registro'),
     path("test/", views.test),
+    path('get_messages/<int:room_id>/', views.get_messages, name='get_messages'),
+    path('videollamada/', views.videollamada, name='videollamada'),
 ]

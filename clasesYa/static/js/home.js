@@ -1,5 +1,6 @@
 function seleccionarDia(event) {
     var diaSeleccionado = event.target.innerHTML;
+    diaSeleccionado = diaSeleccionado.trim();
 
     var parentElement = document.getElementById('allReservas');
     var children = parentElement.children;
@@ -12,13 +13,4 @@ function seleccionarDia(event) {
             child.style.display = 'none';
         }
     }
-};
-
-function scrollToBottom() {
-    var chatBox = document.querySelector('.chatBox');
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-window.onload = function() {
-    scrollToBottom();
 };

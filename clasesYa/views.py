@@ -3,11 +3,17 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
 from .models import Anuncio, Campo, TipoUsuario, Reserva, ChatRoom, ChatMessage
+from django.http import JsonResponse
 import calendar
 from datetime import datetime
 import locale
+from django.utils import timezone
 
 User = get_user_model()
+
+@login_required
+def videollamada(request):
+    return render(request, "videollamada.html", { 'name': request.user.email })
 
 def loginUser(request):
     if request.method == "POST":
@@ -39,12 +45,13 @@ def home(request):
         chatMessages = ChatMessage.objects.filter(idChatRoom__in=chatRooms)
         anuncios = Anuncio.objects.all()
         reservas = Reserva.objects.filter(idProfesor=user.id)
+        
 
     #Funcion para la creacion de un anuncio
     if request.method == "POST":
         if 'anuncioForm' in request.POST:
             if registrarAnuncio(request, user):
-                return redirect('home', {
+                return render(request, 'home.html', {
                     'user': user, 
                     'anuncios': anuncios,
                     'calendar': cal, 
@@ -54,11 +61,11 @@ def home(request):
                     'chatMessages': chatMessages, 
                     'chatRooms': chatRooms,
                     'reservas': reservas,
-                    })
+                })
             else:
-                return redirect('home', {
+                return render(request, 'home.html', {
                     'user': user, 
-                    'anuncios': anuncios, 
+                    'anuncios': anuncios,
                     'calendar': cal, 
                     'month': month, 
                     'year': year, 
@@ -66,11 +73,28 @@ def home(request):
                     'chatMessages': chatMessages, 
                     'chatRooms': chatRooms,
                     'reservas': reservas,
-                    })
-        else:
-            return redirect('home', {
+                })
+        elif 'updateAnuncio' in request.POST:
+            user = request.user
+            anuncio_id = request.POST.get('updateAnuncio')
+            anuncio = Anuncio.objects.get(id=anuncio_id)
+            anuncio.titulo = request.POST.get('inputTitulo')
+            anuncio.subTitulo = request.POST.get('inputSubTitulo')
+            anuncio.descripcion = request.POST.get('inputDescripcion')
+            anuncio.precio = request.POST.get('inputPrecio')
+            campo = request.POST.get('inputCampo')
+            campoReview = Campo.objects.filter(nombre=campo)
+
+            if len(campoReview) == 0:
+                nuevoCampo = Campo(nombre=campo)
+                nuevoCampo.save()
+                anuncio.campo = nuevoCampo
+            else:
+                anuncio.campo = campoReview[0]
+            anuncio.save()
+            return render(request, 'home.html', {
                 'user': user, 
-                'anuncios': anuncios, 
+                'anuncios': anuncios,
                 'calendar': cal, 
                 'month': month, 
                 'year': year, 
@@ -78,11 +102,44 @@ def home(request):
                 'chatMessages': chatMessages, 
                 'chatRooms': chatRooms,
                 'reservas': reservas,
-                })
+            })  
+        elif 'entrarVideo' in request.POST:
+            inputUrl = request.POST['inputUrl']
+            return redirect("/videollamada?roomID=" + inputUrl)
+        if 'reservarClase' in request.POST:
+            anuncioId = request.POST.get('anuncio')
+            alumnoId = request.POST.get('idAlumno')
+            alumno = User.objects.get(id=alumnoId)
+            profesorId = User.objects.get(anuncio=anuncioId)
+            nuevaReserva = Reserva(idAlumno=alumno, idProfesor=profesorId)
+            nuevaReserva.save()
+            return render(request, 'home.html', {
+                'user': user, 
+                'anuncios': anuncios,
+                'calendar': cal, 
+                'month': month, 
+                'year': year, 
+                'monthName': month_name, 
+                'chatMessages': chatMessages, 
+                'chatRooms': chatRooms,
+                'reservas': reservas,
+            })           
+        else:
+            return render(request, 'home.html', {
+                'user': user, 
+                'anuncios': anuncios,
+                'calendar': cal, 
+                'month': month, 
+                'year': year, 
+                'monthName': month_name, 
+                'chatMessages': chatMessages, 
+                'chatRooms': chatRooms,
+                'reservas': reservas,
+            })
     else:
-        return render(request, "home.html", {
+        return render(request, 'home.html', {
             'user': user, 
-            'anuncios': anuncios, 
+            'anuncios': anuncios,
             'calendar': cal, 
             'month': month, 
             'year': year, 
@@ -90,8 +147,7 @@ def home(request):
             'chatMessages': chatMessages, 
             'chatRooms': chatRooms,
             'reservas': reservas,
-            })
-    
+        })
 def registro(request):
     if request.method == 'POST':
         if registrarUsuario(request):
@@ -164,3 +220,12 @@ def registrarAnuncio(request, user):
         return True
     except:
         return False
+
+def get_messages(request, room_id):
+    messages = ChatMessage.objects.filter(idChatRoom=room_id).select_related('idUser')
+    messages_list = []
+    for msg in messages:
+        formatted_time = timezone.localtime(msg.timestamp).strftime('%H:%M')
+        message_dict = {'id': msg.id, 'idChatRoom': msg.idChatRoom.id, 'idUser': msg.idUser.email, 'message': msg.message, 'timestamp': formatted_time}
+        messages_list.append(message_dict)
+    return JsonResponse(messages_list, safe=False)

@@ -47,3 +47,15 @@
     font-family: 'Comfortaa', sans-serif;
     color: #585759 !important;
 }
+
+.parrafoWhite {
+    font-family: 'Comfortaa', sans-serif;
+    color: whitesmoke !important;
+}
+
+.headingWhite-5 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 21px;
+    font-weight: normal;
+    color: whitesmoke;
+}

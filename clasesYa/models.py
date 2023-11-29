@@ -89,18 +89,20 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 class Reserva(models.Model):
-    fecha = models.DateField()
-    hora = models.TimeField()
-    idProfesor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='profesor')
-    idAlumno = models.ForeignKey(User, on_delete=models.CASCADE, related_name='alumno')
+    idAlumno = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='alumno')
+    idProfesor = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='profesor')
+    fecha = models.DateField(null=True)
+    hora = models.TimeField(null=True)
+    estado = models.CharField(max_length = 20, blank=True, default='')
     def __str__(self):
         return 'Fecha: ' + str(self.fecha) + ' | ' + str(self.hora) + ' | Profesor: ' + str(self.idProfesor) + ' | Alumno: ' + str(self.idAlumno)
+
 
 class ChatRoom(models.Model):
     idProfesor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='profesorChat')
     idAlumno = models.ForeignKey(User, on_delete=models.CASCADE, related_name='alumnoChat')
     def __str__(self):
-        return 'Profesor: ' + str(self.idProfesor) + ' | Alumno: ' + str(self.idAlumno)
+        return 'Profesor: ' + str(self.idProfesor) + ' | Alumno: ' + str(self.idAlumno) + ' | Code: ' + str(self.id)
     
 class ChatMessage(models.Model):
     idChatRoom = models.ForeignKey(ChatRoom, on_delete=models.CASCADE)
