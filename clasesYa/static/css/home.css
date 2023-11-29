@@ -21,140 +21,21 @@
     height: 100vh;
 }
 
-.customLogo {
-    width: 30%;
-}
-
-.tittlecontainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid #d6d6d6;
-    height: 20%;
-}
-
-.profileContainer {
-    border-top: 1px solid #d6d6d6;
-    display: flex;
-    align-items: center;
-    margin-top: auto;
-    margin-bottom: 1rem;
-    width: 100%;
-    height: 10%;
-}
-
-.menuContainer {
-    width: 95%;
-    height: 70%;
-}
-
-.sideItem {
-    transition: background-color 0.3s ease;
-    border-bottom: 1px solid #d6d6d6;
-    font-size: 1.5rem;
-    margin-top: 1rem;
-    font-size: 1.2rem;
-    margin-top: 1.5rem;
-    border-radius: 0.5rem;
-    padding: 0.5rem;
-}
-
-.sideItem:hover {
-    background-color: #d6d6d6 !important;
-}
-
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-}
-
-.avatar {
-    margin: 1rem;
-    width: 5rem;
-}
-
-.profileName {
-    font-size: 1.2rem;
-    transition: color 0.2s ease;
-}
-
-.layingImg {
-    height: 30%;
-    margin-top: auto;
-}
-
-.tituloCarousel {
-    font-size: 2.5rem !important;
-    font-weight: bold;
-    color: whitesmoke;
-    text-shadow: 2px 2px 4px rgba(32, 31, 34, 0.5);
-}
-
-.subTituloCarousel {
-    font-size: 1.5rem !important;
-    font-weight: bold;
-    color: whitesmoke;
-    text-shadow: 2px 2px 4px rgba(32, 31, 34, 0.5);
-}
-
-.recordatorioCustom {
-    width: 90%;
-    margin-top: 4rem;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.customCarousel {
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    height: 60%;
-}
-
-.carousel-caption {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
+/* Estilos de botones */
 .botonCustom {
     background-color: #fbdf54;
-    border-color: #FADE52;
+    border-color: #fbdf54;
     font-weight: normal;
+    color: #585759;
 }
 
 .botonCustom:hover {
     background-color: #FACA52;
     border-color: #FACA52;
-    color: #201F22;
+    color: #585759;
 }
 
-.carouselImg {
-    width: 30%;
-    margin: 0 auto !important;
-}
-
-.selected {
-    background-color: #d6d6d6 !important;
-}
-
-.slide-enter-active,
-.slide-leave-active {
-    transition: all 0.5s ease;
-}
-
-.slide-enter,
-.slide-leave-to {
-    transform: translateX(100%);
-}
-
-/* Estilos perfil */
+/* Estilos de perfil */
 .profileCard {
     position: relative;
     margin-left: 5%;
@@ -189,31 +70,137 @@ ul {
     margin-bottom: 2rem;
 }
 
+/* Estilos de transición */
+.slide-enter-active,
+.slide-leave-active {
+    transition: all 0.5s ease;
+}
+
+.slide-enter,
+.slide-leave-to {
+    transform: translateX(100%);
+}
+
+/* Estilos de anuncios cards */
+.anunciosCards {
+    border-radius: 3.5rem;
+    transition: all 0.1s ease-in-out;
+    background-color: #EFE8A9;
+    margin: 5px;
+    max-width: 400px;
+    width: 500px;
+    height: 500px;
+}
+
+.anunciosCards:hover {
+    box-shadow: 0 0 5px rgba(33, 33, 33, .2);
+    transform: scale(1.001);
+    transition: all 0.1s ease-in-out;
+}
+
+/* Otros estilos */
+.tituloCarousel {
+    font-size: 2.5rem !important;
+    font-weight: bold;
+    color: whitesmoke;
+    text-shadow: 2px 2px 4px rgba(32, 31, 34, 0.5);
+}
+
+.subTituloCarousel {
+    font-size: 1.5rem !important;
+    font-weight: bold;
+    color: whitesmoke;
+    text-shadow: 2px 2px 4px rgba(32, 31, 34, 0.5);
+}
+
+.recordatorioCustom {
+    width: 90%;
+    margin-top: 4rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.customCarousel {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 60%;
+}
+
+.carousel-caption {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Botones personalizados */
 .botonCustom {
     background-color: #fbdf54;
-    border-color: #fbdf54;
+    border-color: #FADE52;
     font-weight: normal;
-    color: #585759;
 }
 
 .botonCustom:hover {
     background-color: #FACA52;
     border-color: #FACA52;
-    color: #585759;
+    color: #201F22;
 }
 
-.form-control:focus {
-    border-color: #FAF252;
-    box-shadow: 0 0 0 0.2rem #FADE52;
+/* Elemento seleccionado */
+.selected {
+    background-color: #d6d6d6 !important;
 }
 
-.customCol{
-    border-bottom: 1px solid #d6d6d6;
+/* Transiciones de diapositivas */
+.slide-enter-active,
+.slide-leave-active {
+    transition: all 0.5s ease;
 }
-/* Estilos perfil */
 
+.slide-enter,
+.slide-leave-to {
+    transform: translateX(100%);
+}
+
+/* Estilos del perfil */
+.profileCard {
+    position: relative;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 10%;
+    margin-bottom: 10%;
+    border-radius: 1.5rem;
+}
+
+.avatar-img {
+    position: absolute;
+    top: 3%;
+    left: 15%;
+    z-index: 2;
+    width: 7rem;
+}
+
+.banner-img {
+    position: block;
+    top: 10;
+    width: 60%;
+    height: 5rem;
+    margin-left: 20%;
+    margin-top: 2rem;
+    border-radius: 1.5rem;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.customRow {
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+}
+
+/* Cuadro de texto personalizado */
 .customTextArea {
-    width: 100%; box-sizing: border-box; 
+    width: 100%;
+    box-sizing: border-box;
     resize: none;
     border: 1px solid #d6d6d6;
     border-radius: 1rem;
@@ -228,95 +215,30 @@ textarea:focus {
     box-shadow: 0 0 0 0.2rem #FADE52;
 }
 
-.anuncioCard {
-    margin-left: 5%;
-    margin-right: 5%;
-    margin-top: 5%;
-    margin-bottom: 5%;
-    border-radius: 1.5rem;
-}
-.titulodeanuncios {
-    font-family: 'Montserrat';
-    font-weight: 700;
-    font-size: 51px;
-    line-height: 62.17px;
-    color: #201F22;
-}
-.barrita {
-    width: 100%;
-    height: 50px;
-    background-color: #BDB7C9;
-    border-radius: 10px;
-}
-.subtituloanuncios {
-    font-family: 'Montserrat';
-    font-weight: 700;
-    font-size: 38px;
-    line-height: 46.32px;
-    color: #201F22;
 
-}
-/*cuadro de los anuncios*/
-.clasesCard {
-    margin-left: 4%;
-    margin-right: 4%;
-    margin-top: 4%;
-    margin-bottom: 4%;
-    border-radius: 1.5rem;
-    padding: 2rem;
-    background-color:#E6E6E6;
-    
-    
-}
-/* cartas de los anuncios*/ 
- .cartas-container {
-    
-    max-height: 400px;
-    overflow-y: auto;
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 20px;   
-} 
-.carta {
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin: 10px;
-    cursor: pointer;
-    transition: transform 0.3s;
-}
-/* .carta-personalizada {
-    width: 250px; 
-    height: 300px; 
-} */
+
 .anunciosCards {
     border-radius: 3.5rem;
     transition: all 0.1s ease-in-out;
     background-color: #EFE8A9;
     margin: 5px;
-    max-width: 400px; 
+    max-width: 400px;
     width: 500px;
     height: 500px;
-    
 }
-  .equal-card {
-    margin-right: 100px;
 
-    
-    
-    
-} 
 .anunciosCards:hover {
-    box-shadow: 0 0 5px rgba(33,33,33,.2); 
+    box-shadow: 0 0 5px rgba(33, 33, 33, .2);
     transform: scale(1.001);
     transition: all 0.1s ease-in-out;
-    
-    
 }
 
+/* Perfil: nombre al pasar el ratón */
 .profileName:hover {
     color: #FACA52 !important;
 }
 
+/* Estilos del modal */
 .modal {
     display: none;
     position: fixed;
@@ -324,9 +246,8 @@ textarea:focus {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #FADE52(0, 0, 0, 0.7);
+    background-color: rgba(250, 222, 82, 0.7);
     font-family: 'Montserrat';
-
 }
 
 .modal-content {
@@ -335,32 +256,15 @@ textarea:focus {
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: #FAF2DD;
-    padding: 300px; 
-    text-align: center; 
+    padding: 300px;
+    text-align: center;
     font-family: 'Montserrat';
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-
-    
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     color: #333;
     font-size: 18px;
     line-height: 1.5;
 }
 
 .cerrar {
-    position: absolute;
-    top: 10px;
-    right: 50px;
-    font-size: 50px;
-    cursor: pointer;
+    position: absolute
 }
-#reservarBtn {
-    font-family: 'Montserrat';
-    background-color: #FACA52;
-    color: #201F22;
-    padding: 10px 20px;
-    border: orange 1px solid;
-    border-radius: 50px;
-    cursor: pointer;
-    font-size: 30px;
-}
-

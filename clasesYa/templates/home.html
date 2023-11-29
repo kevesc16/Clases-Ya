@@ -1,15 +1,14 @@
+
 {% extends 'base.html' %}
 {% load static %}
 {% block head %}
-<title>Home</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-<link rel="stylesheet" href="/path/to/fontawesome/css/all.min.css">
-<link rel="stylesheet" href="{% static '/css/home.css' %}" />
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
+  <title>Home</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="/path/to/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="{% static '/css/home.css' %}" />
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 {% endblock %}
-
 {% block body %}
 <div class="mainContainer" id="mainContainer">
   <div class="leftContainer">
@@ -40,9 +39,7 @@
       </a>
     </div>
   </div>
-
   <div class="rightContainer">
-
     <transition name="slide">
       <div v-if="selectedItem === 'Inicio'">
         <div id="carouselHome" class="carousel slide customCarousel">
@@ -81,7 +78,6 @@
           <button class="carousel-control-next" type="button" data-bs-target="#carouselHome" data-bs-slide="next"><span
               class="carousel-control-next-icon" aria-hidden="true"></span></button>
         </div>
-
         <div class="card recordatorioCustom">
           <h5 class="card-header heading-5">Recordatorios</h5>
           <div class="card-body">
@@ -92,7 +88,6 @@
         </div>
       </div>
     </transition>
-
     <transition name="slide">
       <div v-if="selectedItem === 'Calendario'">
         <div class="card ">
@@ -106,7 +101,6 @@
         </div>
       </div>
     </transition>
-
     <transition name="slide">
       <div v-if="selectedItem === 'Chat'">
         <div class="card ">
@@ -121,7 +115,6 @@
         </div>
       </div>
     </transition>
-
     <transition name="slide">
       <div v-if="selectedItem === 'Ingresa a tu clase'">
         <div class="card ">
@@ -135,7 +128,6 @@
         </div>
       </div>
     </transition>
-
     {% if user.tipoUsuario.id == 2 %}
     <transition name="slide">
       <div v-if="selectedItem === 'Buscar clases'">
@@ -149,9 +141,8 @@
             <div class="container cartas-container row mx-2">
             <div class="row">
               {% for anuncio in anuncios %}
-              
               <div class="col-12 col-md-6 col-lg-4 equal-card mb-1">
-                <div class="card anunciosCards equal-card " onclick="mostrarDetalles('{{ anuncio.titulo }}','{{ anuncio.subTitulo }}', '{{anuncio.descripcion}}', '{{anuncio.precio}}', '{{anuncio.campo.nombre}}')">
+                <div class="card anunciosCards equal-card " onclick="mostrarDetalles('{{ anuncio.id }}','{{ anuncio.titulo }}','{{ anuncio.subTitulo }}', '{{anuncio.descripcion}}', '{{anuncio.precio}}', '{{anuncio.campo.nombre}}')">
                   <div class="card-body text-center">
                 <a href="#" >
                       <h4 class="heading-4 text-center">{{ anuncio.titulo }}</h4>
@@ -168,13 +159,14 @@
           </div>
         </div>
       </div>
-      </div>
     </transition>
   </div>
   <div id="modalAnuncio" class="modal">
     <div class="modal-content">
         <span class="cerrar" id="cerrarModal" onclick="cerrarModal()">&times;</span>
         <div id="detalleAnuncio">
+          <form method="POST">
+            {% csrf_token %}
         <!-- Muestra detalles del anuncio y del profesor -->
         <h1 id="modalTitulo"></h1>
         <h5 id="modalsubTitulo"></h5>
@@ -182,37 +174,18 @@
         <p id="modalPrecio"></p>
         <p id="modalCampo.nombre"></p>
         
+        <input type="hidden" name="anuncio" id="anuncio">
+        <input type="hidden" name="idAlumno" id="idAlumno" value="{{ user.id }}">
         <!-- Botón en el modal -->
-        <script>
-          function reservarClase(clase_id) {
-            fetch('/reservar_clase/' + clase_id + '/', {
-              if (!response.ok) {
-                throw new Error('Error al reservar la clase');
-              }
-              return response.json();
-            })
-            .then(data => {
-        // Manejar la respuesta exitosa, por ejemplo, mostrar un mensaje de éxito
-        console.log(data);
-        alert('Clase reservada exitosamente');
-              })
-              .catch(error => {
-                // Manejar el error, por ejemplo, mostrar un mensaje de error
-                console.error('Error al reservar la clase', error);
-                alert('Error al reservar la clase');
-              });
-          }
-          </script>
-          
-          
 
-        <button id="reservarBtn" v-on:click="reservar_clase(Clase)">Solicitar reserva</button>
-
+          <button id="reservarBtn" type="submit" name="reservarClase">Solicitar reserva</button>
+        <form>
       </div>
     </div>
-</div>
+</div> 
+
 <script>
-  function mostrarDetalles(titulo, subTitulo, descripcion, precio, campo) {
+  function mostrarDetalles(id, titulo, subTitulo, descripcion, precio, campo) {
       // Establece el contenido del modal con los detalles de la carta
       document.getElementById("inputAvatar")
       document.getElementById("modalTitulo").innerText = titulo;
@@ -220,11 +193,16 @@
       document.getElementById("modalDescripcion").innerText = descripcion;
       document.getElementById("modalPrecio").innerText = "Precio: $" + precio;
       document.getElementById("modalCampo.nombre").innerText = "Campo: " + campo;
+      document.getElementById("reservarBtn").onclick = () => {goToClass(id)};
       
-
+      document.getElementById("anuncio").value = id;
       // Muestra el modal
       var modal = document.getElementById("modalAnuncio");
       modal.style.display = "block";
+  }
+
+  function goToClass(id){
+      window.location.assign("/reservar_clase/" + id);
   }
 
   function cerrarModal() {
@@ -234,9 +212,6 @@
   }
 </script>
     {% endif %}
-
-    
-
     <transition name="slide">
       <div v-if="selectedItem === 'Compra creditos!'">
         <div class="card ">
@@ -250,7 +225,6 @@
         </div>
       </div>
     </transition>
-
     <transition name="slide">
       <div v-if="selectedItem === 'Perfil'">
         <div class="card profileCard">
@@ -331,7 +305,6 @@
         </div>
       </div>
     </transition>
-
     {% if user.tipoUsuario.id == 1 %}
     <transition name="slide">
       <div v-if="selectedItem === 'Mi anuncio'">
@@ -339,7 +312,7 @@
           <div class="card-body">
             {% if user.anuncio == None %}
             <h1 class="heading-5 text-center mb-5">Empieza a crear tu anuncio para que los alumnos te encuentren!</h1>
-            <form method="POST" action="{% url 'home' %}" id="anuncioForm">
+            <form method="POST" action="{% url 'home' %}">
               {% csrf_token %}
               <div class="row">
                 <div class="col-6">
@@ -380,25 +353,21 @@
                 </div>
                 <div class="col-12">
                   <div class="customInput mb-4 text-center">
-                    <button type="submit" name="anuncioForm" value="anuncioForm" class="btn botonCustom heading-6">Crear
-                      Anuncio</button>
+                    <button type="submit" name="anuncioForm" value="anuncioForm" class="btn botonCustom heading-6">Crear Anuncio</button>
                   </div>
                 </div>
               </div>
             </form>
             {% else %}
             <h1 class="heading-5 text-center mb-5">Modifica tu anuncio</h1>
-            <form method="POST">
+            <form method="POST" action="{% url 'home' %}" >
               {% csrf_token %}
-              {{ form.as_p }}
-              <form type="submit" value=" Modificar Anuncio"></form>
               <div class="row">
                 <div class="col-6">
-                  <div class="customInput mb-4">
-                    <label for="inputTitulo" class="form-label parrafo">Titulo</label>
-                    <input type="text" class="form-control parrafo" id="inputTitulo"
-                      placeholder="{{ user.anuncio.titulo }}" name="inputTitulo" />
-                  </div>
+                    <div class="customInput mb-4">
+                        <label for="inputTitulo" class="form-label parrafo">Titulo</label>
+                        <input type="text" class="form-control parrafo" id="inputTitulo" placeholder="{{ user.anuncio.titulo }}" name="inputTitulo" />
+                    </div>
                 </div>
                 <div class="col-6">
                   <div class="customInput mb-4">
@@ -433,7 +402,6 @@
                   <div class="customInput mb-4 text-center">
                     <button type="submit" name="updateAnuncio" value="{{ user.anuncio.id }}"
                       class="btn botonCustom heading-6">Confirmar cambios</button>
-                     
                   </div>
                 </div>
               </div>
@@ -446,8 +414,6 @@
     {% endif %}
   </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
 <script>
   var app = new Vue({
     el: '#mainContainer',
@@ -460,8 +426,5 @@
   selectedItem: 'Inicio'
     }
   })
-
-  
-
 </script>
 {% endblock %}

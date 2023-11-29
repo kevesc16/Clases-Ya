@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import UserManager, AbstractBaseUser, PermissionsMixin
+from django.contrib.auth import get_user_model
+
 
 class CustomUserManager(UserManager):
     def _create_user(self, email, password, **extra_fields):
@@ -34,9 +36,7 @@ class Anuncio(models.Model):
     subTitulo = models.CharField(max_length = 255, blank=True, default='')
     descripcion = models.CharField(max_length = 255, blank=True, default='')
     precio = models.IntegerField(blank=True, default=0)
-    campo = models.ForeignKey(Campo, on_delete=models.CASCADE, default=1)
-
-    
+    campo = models.ForeignKey(Campo, on_delete=models.CASCADE, default=1) 
 class Sesion(models.Model):
     duracion = models.IntegerField(blank=True, default=0)
     fecha = models.DateField(auto_now_add=True)
@@ -58,8 +58,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     rating = models.IntegerField(blank=True, default=0)
     anuncio = models.ForeignKey(Anuncio, on_delete=models.CASCADE, blank=True, null=True)
     tipoUsuario = models.ForeignKey(TipoUsuario, on_delete=models.CASCADE, null=True)
-
-
     is_active = models.BooleanField(default = True)
     is_superuser = models.BooleanField(default = False)
     is_staff = models.BooleanField(default = False)
@@ -74,9 +72,19 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.username   
     def get_short_name(self):
         return self.username or self.email.split('@')[0]
-    
 
 class Clase(models.Model):
-    profesor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='clases_profesor')
-    fecha_reserva = models.DateField(null=True, blank=True)
-    usuario_reserva = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='clases_reservadas')
+    nombre = models.CharField(max_length = 255, blank=True, default='')
+    descripcion = models.CharField(max_length = 255, blank=True, default='')
+    precio = models.IntegerField(blank=True, default=0)
+    profesor = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    campo = models.ForeignKey(Campo, on_delete=models.CASCADE, default=1)
+    sesion = models.ForeignKey(Sesion, on_delete=models.CASCADE, default=1)
+    rating = models.IntegerField(blank=True, default=0)
+
+class Reserva(models.Model):
+    idAlumno = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='alumno')
+    idProfesor = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='profesor')
+    fechaHora = models.DateTimeField(null=True)
+    estado = models.CharField(max_length = 20, blank=True, default='')
+

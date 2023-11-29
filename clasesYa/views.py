@@ -1,13 +1,10 @@
 import datetime
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
-from .models import Anuncio, Campo, Clase, TipoUsuario
-
-User = get_user_model()
-
+from .models import Anuncio, Campo, TipoUsuario, Clase, Sesion, Reserva, User
 
 # Create your views here.
 def loginUser(request):
@@ -31,12 +28,13 @@ def logoutUser(request):
 def home(request):
     if request.method == "POST":
         if 'anuncioForm' in request.POST:
+            # Lógica para la creación de un nuevo anuncio
             titulo = request.POST.get('inputTitulo')
             subTitulo = request.POST.get('inputSubTitulo')
             descripcion = request.POST.get('inputDescripcion')
             precio = request.POST.get('inputPrecio')
             campo = request.POST.get('inputCampo')
-
+            
             campoReview = Campo.objects.filter(nombre=campo)
             if len(campoReview) == 0:
                 nuevoCampo = Campo(nombre=campo)
@@ -47,13 +45,11 @@ def home(request):
             anuncio = Anuncio(titulo=titulo, subTitulo=subTitulo, descripcion=descripcion, precio=precio, campo=campo)
             user = request.user
             anuncio.save()
-            print(f"anuncio: {anuncio}, user: {user}")
             user.anuncio = anuncio
             user.save()
-            
             return redirect('home')
         elif 'updateAnuncio' in request.POST:
-            # Logica para la actualizacion de un anuncio existente
+            # Lógica para la actualización de un anuncio existente
             user = request.user
             anuncio_id = request.POST.get('updateAnuncio')
             anuncio = Anuncio.objects.get(id=anuncio_id)
@@ -73,7 +69,14 @@ def home(request):
                 anuncio.campo = campoReview[0]
 
             anuncio.save()
-
+        if 'reservarClase' in request.POST:
+            # Lógica para la reserva de una clase
+            anuncioId = request.POST.get('anuncio')
+            alumnoId = request.POST.get('idAlumno')
+            alumno = User.objects.get(id=alumnoId)
+            profesorId = User.objects.get(anuncio=anuncioId)
+            nuevaReserva = Reserva(idAlumno=alumno, idProfesor=profesorId)
+            nuevaReserva.save()
             return redirect('home')
 
         else:
@@ -102,20 +105,3 @@ def registro(request):
     else:
         return render(request, "registro.html")
 
-def reservar_clase(request, clase_id):
-    if request.method == "POST":
-        clase = get_object_or_404(Clase, pk=clase_id)
-
-        # Verifica si la clase ya está reservada
-        if clase.usuario_reserva:
-            # Maneja caso de clase ya reservada
-            return JsonResponse({'error': 'La clase ya está reservada'}, status=400)
-
-        # Asigna la clase al usuario actual
-        user = request.user
-        clase.usuario_reserva = user
-        clase.fecha_reserva = datetime.date.today()  
-        clase.save()
-        return JsonResponse({'message': 'Clase reservada exitosamente'})
-        return JsonResponse({'error': 'Método no permitido'}, status=405)
-  

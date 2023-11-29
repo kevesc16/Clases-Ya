@@ -124,4 +124,3 @@ STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
